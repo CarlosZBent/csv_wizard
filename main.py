@@ -1,12 +1,29 @@
 from csv import reader, Sniffer
 
-def open_file(file, column=None, delimiter=','):
-    with open(str(file)) as opened_file:
-        parser = reader(opened_file, delimiter=str(delimiter))
-        for row in parser:
-            if column != None:
-                print(row[column])
-            else:
-                print(row)
+class File:
+    def __init__(self, source:str) -> None:
+        self.source = source
 
-open_file('employees_from_excel.csv')
+    def read_delimiter(self):
+        with open(str(self.source)) as file:
+            parser = reader(file)
+            for row in parser:
+                dialect = Sniffer().sniff(str(row))
+                return dialect.delimiter        
+
+
+    def read_rows(self, column=None, delimiter=','):
+        '''
+        Read all rows on a file
+        '''
+        with open(str(self.source)) as file:
+            parser = reader(file, delimiter=str(delimiter))
+            for row in parser:
+                if column != None:
+                    return row[column]
+                else:
+                    return row
+
+
+emps = File('employees.csv')
+print(emps.read_delimiter())
