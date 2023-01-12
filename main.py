@@ -4,23 +4,23 @@ class File:
     def __init__(self, source:str) -> None:
         self.source = source
 
-    def read_delimiter(self):
+    def get_dialect(self):
         """
-        'Sniff' the delimiter in a file
+        Return the dialect from the file. The dialect contains properties 
+        regarding the way the CSV file is structured.
         """
         with open(str(self.source)) as file:
             parser = reader(file)
             for row in parser:
                 dialect = Sniffer().sniff(str(row))
-                return dialect.delimiter        
+                return dialect
 
 
-    def read_headers(self, delimiter=','):
-        '''
-        Read all rows on a file
-        '''
+    def get_headers(self, delimiter=','):
+        """
+        Return the headers on a file.
+        """
         with open(str(self.source)) as file:
             parser = reader(file, delimiter=str(delimiter))
             for line in parser:
                 return line
-                
