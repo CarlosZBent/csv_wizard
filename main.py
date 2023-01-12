@@ -35,3 +35,14 @@ class File:
             for line in parser:
                 row_counter += 1
             return row_counter
+
+    def get_all_rows(self, delimiter=','):
+        """
+        Get the content of all the rows in the file.
+        """
+        with open(str(self.source)) as file:
+            parser = reader(file, delimiter=str(delimiter))
+            row_container = []
+            for line in parser:
+                row_container.append(line)
+            return row_container
