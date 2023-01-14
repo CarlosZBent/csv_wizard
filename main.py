@@ -31,10 +31,10 @@ class File:
         """
         with open(str(self.source)) as file:
             parser = reader(file, delimiter=str(delimiter))
-            row_counter = -1
+            row_count = -1
             for line in parser:
-                row_counter += 1
-            return row_counter
+                row_count += 1
+            return row_count
 
     def get_all_rows(self, delimiter=','):
         """
@@ -46,3 +46,24 @@ class File:
             for line in parser:
                 row_container.append(line)
             return row_container
+
+    def slice_in_half(self, row_count:int, delimiter=','):
+        with open(str(self.source)) as file:
+            parser = reader(file, delimiter=str(delimiter))
+            # original csv.reader object is not iterable
+            # saving it's elements to this iterable gives greater flexibility
+            parser_iterable = []
+            row_container1 = []
+            row_container2 = []
+            half = row_count/2
+            for line in parser:
+                parser_iterable.append(line)
+                # slice the parser_iterable after it's first item 
+                # to leave the header row out of the result
+            for item in parser_iterable[1:]:
+                row_container1.append(item)
+                if len(row_container1) > half:
+                    break
+                row_container2.append(item)
+            master_container = {'First_Half': row_container1, 'Second_Half':row_container2}
+            return master_container

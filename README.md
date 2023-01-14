@@ -10,9 +10,17 @@ The dialect property contains:
 * delimiter
 * quotechar
 * skipinitialspace
-
+***
 ## The `get_headers` method
-The `get_headers` method returns only the first line on the CSV file, which is presumed to be the one containing the headers
-
+Returns only the first line on the CSV file, which is presumed to be the one containing the headers
+***
 ## The `get_row_count` method
-The `get_row_count` method returns the number of rows that the file contains, without taking into account the headers row
+Returns the number of rows that the file contains, without taking into account the headers row
+***
+## The `get_all_rows` method
+Returns a list containing the content of each individual row, including the header row. This is different from `get_header_count` in that it returns the complete content of the rows, not only how many there are.
+***
+## The `slice_in_half` method
+Returns a dictionary with two key-value pairs. The keys are called "First_Half" and "Second_Half", and they respectively contain each half of the file's rows.
+If the total nomber of rows is odd, it returns the first half will contain one more row to compensate.
+Neither half will contain the header column. That must be obtained with the `get_headers` method. 
