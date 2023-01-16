@@ -48,6 +48,10 @@ class File:
             return row_container
 
     def slice_in_half(self, row_count:int, delimiter=','):
+        """
+        Divide the file's rows exactly in half if possible.
+        If the total number of rows is odd the first half will contain one extra row.
+        """
         with open(str(self.source)) as file:
             parser = reader(file, delimiter=str(delimiter))
             # original csv.reader object is not iterable
