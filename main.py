@@ -2,7 +2,8 @@ from csv import reader, Sniffer
 
 class File:
     def __init__(self, source:str) -> None:
-        self.source = source
+        # concat the .csv extension so it is not necessary when instatiating
+        self.source = f'{source}.csv'
 
     def get_dialect(self):
         """
