@@ -47,7 +47,7 @@ class File:
                 row_container.append(line)
             return row_container
 
-    def slice_in_half(self, row_count:int, delimiter=','):
+    def slice(self, row_count:int, delimiter=','):
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
@@ -69,5 +69,28 @@ class File:
                 if len(row_container1) > half:
                     break
                 row_container2.append(item)
-            master_container = {'First_Half': row_container1, 'Second_Half':row_container2}
+            master_container = {
+                'First_Half': row_container1, 
+                'Second_Half':row_container2
+                }
             return master_container
+
+    def divide(self, row_count:int, parts, delimiter=','):
+         """
+         Divide the file in the amount of parts indicated by the user.
+         """
+         with open(str(self.source)) as file:
+             parser = reader(file, delimiter=str(delimiter))
+             parser_iterable = []
+             parts_size = row_count/parts
+             for line in parser:
+                 parser_iterable.append(line)
+             parser_iterable.pop(0)
+             def sever(list, n):
+                 p = len(list) // n
+                 if len(list)-p > 0:
+                     return [list[:p]] + sever(list[p:], n-1)
+                 else:
+                     return [list]
+             return sever(parser_iterable, parts)
+            
