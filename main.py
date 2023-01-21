@@ -1,11 +1,12 @@
-from csv import reader, Sniffer
+from typing import Type
+from csv import reader, Sniffer, Dialect
 
 class FileReader:
     def __init__(self, source:str) -> None:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
 
-    def get_dialect(self):
+    def get_dialect(self) -> Type[Dialect] :
         """
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
@@ -17,7 +18,7 @@ class FileReader:
                 return dialect
 
 
-    def get_headers(self, delimiter=','):
+    def get_headers(self, delimiter=',') -> list :
         """
         Return the headers on a file.
         """
@@ -26,7 +27,7 @@ class FileReader:
             for line in parser:
                 return line
 
-    def get_row_count(self, delimiter=','):
+    def get_row_count(self, delimiter=',') -> int :
         """
         Get the amount of rows that the file contains, excluding the headers row.
         """
@@ -37,7 +38,7 @@ class FileReader:
                 row_count += 1
             return row_count
 
-    def get_all_rows(self, delimiter=','):
+    def get_all_rows(self, delimiter=',') -> list :
         """
         Get the content of all the rows in the file.
         """
@@ -48,7 +49,7 @@ class FileReader:
                 row_container.append(line)
             return row_container
 
-    def slice(self, row_count:int, delimiter=','):
+    def slice(self, row_count:int, delimiter=',') -> dict :
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
@@ -76,7 +77,7 @@ class FileReader:
                 }
             return master_container
 
-    def divide(self, row_count:int, parts, delimiter=','):
+    def divide(self, row_count:int, parts, delimiter=',') -> list:
          """
          Divide the file in the amount of parts indicated by the user.
          """
@@ -87,7 +88,7 @@ class FileReader:
              for line in parser:
                  parser_iterable.append(line)
              parser_iterable.pop(0)
-             def sever(list, n):
+             def sever(list, n) -> list :
                  p = len(list) // n
                  if len(list)-p > 0:
                      return [list[:p]] + sever(list[p:], n-1)
