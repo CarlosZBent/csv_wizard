@@ -1,9 +1,9 @@
 # CSV Divider
-Import a CSV file by only giving the `File` class a `string` containing the full name of the file without the *.csv* part.
-> `new_file = File("my_file")`
-
+### Import a CSV file by only giving the `FileReader` class a `string` containing the full name of the file without the *.csv* part.
+> `new_file = FileReader("my_file")`
+***
 ## Getting the characters that define the CSV's layout. The `get_dialect` method.
-Calling this method on a File object returns it's dialect property.
+Calling this method on a FileReader object returns it's dialect property.
 The dialect property contains:
 * lineterminator
 * quoting

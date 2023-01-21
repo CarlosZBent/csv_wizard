@@ -1,6 +1,6 @@
 from csv import reader, Sniffer
 
-class File:
+class FileReader:
     def __init__(self, source:str) -> None:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
