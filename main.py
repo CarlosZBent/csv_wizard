@@ -24,52 +24,52 @@ class FileReader:
             dialect = Sniffer().sniff(str(row))
             return dialect
 
-    def __get_row_count(self, delimiter=',') -> int :
+    def __get_row_count(self) -> int :
         """
         Get the amount of rows that the file contains, excluding the headers row.
         """
         file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
+        parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_count = -1
         for line in parser:
             row_count += 1
         return row_count
 
-    def get_headers(self, delimiter=',') -> list :
+    def get_headers(self) -> list :
         """
         Return the headers on a file.
         """
         file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
+        parser = reader(file, delimiter=self.get_dialect().delimiter)
         for line in parser:
             return line
 
 
-    def get_all_rows(self, delimiter=',') -> list :
+    def get_all_rows(self) -> list :
         """
         Get the content of all the rows in the file.
         """
         file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
+        parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_container = []
         for line in parser:
             row_container.append(line)
         return row_container
 
-    def slice(self, delimiter=',') -> dict :
+    def slice(self) -> dict :
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
         """
         file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
+        parser = reader(file, delimiter=self.get_dialect().delimiter)
         # original csv.reader object is not iterable
         # saving it's elements to this iterable gives greater flexibility
         parser_iterable = []
         row_container1 = []
         row_container2 = []
         # half = row_count/2
-        half = int(self.__get_row_count(str(self.get_dialect().delimiter)))/2
+        half = int(self.__get_row_count())/2
         for line in parser:
             parser_iterable.append(line)
             # slice the parser_iterable after it's first item 
@@ -85,12 +85,12 @@ class FileReader:
             }
         return master_container
 
-    def divide(self, number_of_parts, delimiter=',') -> list:
+    def divide(self, number_of_parts) -> list:
         """
         Divide the file in the amount of parts indicated by the user.
         """
         file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
+        parser = reader(file, delimiter=self.get_dialect().delimiter)
         parser_iterable = []
         for line in parser:
             parser_iterable.append(line)
