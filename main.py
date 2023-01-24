@@ -3,8 +3,6 @@ from pathlib import Path
 from csv import reader, Sniffer, Dialect
 
 
-
-
 class FileReader:
     def __init__(self, source:str) -> None:
         # concat the .csv extension so it is not necessary when instatiating
@@ -58,7 +56,7 @@ class FileReader:
             row_container.append(line)
         return row_container
 
-    def slice(self, row_count:int, delimiter=',') -> dict :
+    def slice(self, delimiter=',') -> dict :
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
@@ -70,7 +68,8 @@ class FileReader:
         parser_iterable = []
         row_container1 = []
         row_container2 = []
-        half = row_count/2
+        # half = row_count/2
+        half = int(self.get_row_count(str(self.get_dialect().delimiter)))/2
         for line in parser:
             parser_iterable.append(line)
             # slice the parser_iterable after it's first item 
@@ -86,14 +85,13 @@ class FileReader:
             }
         return master_container
 
-    def divide(self, row_count:int, parts, delimiter=',') -> list:
+    def divide(self, number_of_parts, delimiter=',') -> list:
         """
         Divide the file in the amount of parts indicated by the user.
         """
         file = self.__open()
         parser = reader(file, delimiter=str(delimiter))
         parser_iterable = []
-        parts_size = row_count/parts
         for line in parser:
             parser_iterable.append(line)
         parser_iterable.pop(0)
@@ -103,5 +101,5 @@ class FileReader:
                 return [list[:p]] + sever(list[p:], n-1)
             else:
                 return [list]
-        return sever(parser_iterable, parts)
+        return sever(parser_iterable, number_of_parts)
             
