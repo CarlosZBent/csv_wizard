@@ -24,6 +24,16 @@ class FileReader:
             dialect = Sniffer().sniff(str(row))
             return dialect
 
+    def __get_row_count(self, delimiter=',') -> int :
+        """
+        Get the amount of rows that the file contains, excluding the headers row.
+        """
+        file = self.__open()
+        parser = reader(file, delimiter=str(delimiter))
+        row_count = -1
+        for line in parser:
+            row_count += 1
+        return row_count
 
     def get_headers(self, delimiter=',') -> list :
         """
@@ -34,16 +44,6 @@ class FileReader:
         for line in parser:
             return line
 
-    def get_row_count(self, delimiter=',') -> int :
-        """
-        Get the amount of rows that the file contains, excluding the headers row.
-        """
-        file = self.__open()
-        parser = reader(file, delimiter=str(delimiter))
-        row_count = -1
-        for line in parser:
-            row_count += 1
-        return row_count
 
     def get_all_rows(self, delimiter=',') -> list :
         """
@@ -69,7 +69,7 @@ class FileReader:
         row_container1 = []
         row_container2 = []
         # half = row_count/2
-        half = int(self.get_row_count(str(self.get_dialect().delimiter)))/2
+        half = int(self.__get_row_count(str(self.get_dialect().delimiter)))/2
         for line in parser:
             parser_iterable.append(line)
             # slice the parser_iterable after it's first item 
