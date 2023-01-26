@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, TextIO
 from pathlib import Path
 from csv import reader, Sniffer, Dialect
 
@@ -8,7 +8,7 @@ class FileReader:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
 
-    def __open(self):
+    def __open(self) -> TextIO:
         """
         Private method to open the file in read mode
         """
