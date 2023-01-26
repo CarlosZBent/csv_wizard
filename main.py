@@ -9,6 +9,9 @@ class FileReader:
         self.source = f'{source}.csv'
 
     def __open(self):
+        """
+        Private method to open the file in read mode
+        """
         file = Path(str(self.source))
         return file.open('r')
 
@@ -26,7 +29,8 @@ class FileReader:
 
     def __get_row_count(self) -> int :
         """
-        Get the amount of rows that the file contains, excluding the headers row.
+        Private method to get the amount of rows that 
+        the file contains, excluding the headers row.
         """
         file = self.__open()
         parser = reader(file, delimiter=self.get_dialect().delimiter)
@@ -91,6 +95,9 @@ class FileReader:
         """
         file = self.__open()
         parser = reader(file, delimiter=self.get_dialect().delimiter)
+        row_count = self.__get_row_count()
+        if number_of_parts > row_count:
+            raise IndexError('Number of parts is greater than total row count')
         parser_iterable = []
         for line in parser:
             parser_iterable.append(line)
