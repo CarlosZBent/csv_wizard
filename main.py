@@ -15,7 +15,6 @@ class FileReader:
         file = Path(str(self.source))
         return file.open('r')
 
-
     def get_dialect(self) -> Type[Dialect] :
         """
         Return the dialect from the file. The dialect contains properties 
@@ -26,6 +25,7 @@ class FileReader:
         for row in parser:
             dialect = Sniffer().sniff(str(row))
             return dialect
+        file.close()
 
     def __get_row_count(self) -> int :
         """
@@ -37,6 +37,7 @@ class FileReader:
         row_count = -1
         for line in parser:
             row_count += 1
+        file.close()
         return row_count
 
     def get_headers(self) -> list :
@@ -47,6 +48,7 @@ class FileReader:
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         for line in parser:
             return line
+        file.close()
 
 
     def get_all_rows(self) -> list :
@@ -58,6 +60,7 @@ class FileReader:
         row_container = []
         for line in parser:
             row_container.append(line)
+        file.close()
         return row_container
 
     def slice(self) -> dict :
@@ -72,12 +75,12 @@ class FileReader:
         parser_iterable = []
         row_container1 = []
         row_container2 = []
-        # half = row_count/2
         half = int(self.__get_row_count())/2
         for line in parser:
             parser_iterable.append(line)
             # slice the parser_iterable after it's first item 
             # to leave the header row out of the result
+        file.close()
         for item in parser_iterable[1:]:
             row_container1.append(item)
             if len(row_container1) > half:
@@ -103,6 +106,7 @@ class FileReader:
         parser_iterable = []
         for line in parser:
             parser_iterable.append(line)
+        file.close()
         parser_iterable.pop(0)
         def sever(list, n) -> list :
             p = len(list) // n
