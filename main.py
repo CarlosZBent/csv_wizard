@@ -93,11 +93,13 @@ class FileReader:
         """
         Divide the file in the amount of parts indicated by the user.
         """
+        if type(number_of_parts) == float:
+            raise TypeError("number_of_parts must be of type integer")
         file = self.__open()
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_count = self.__get_row_count()
         if number_of_parts > row_count:
-            raise IndexError('Number of parts is greater than total row count')
+            raise IndexError('number_of_parts is greater than row_count')
         parser_iterable = []
         for line in parser:
             parser_iterable.append(line)
