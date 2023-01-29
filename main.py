@@ -1,6 +1,6 @@
 from typing import Type, TextIO
 from pathlib import Path
-from csv import reader, Sniffer, Dialect
+from csv import reader, writer, Sniffer, Dialect
 
 
 class FileReader:
@@ -15,7 +15,7 @@ class FileReader:
         file = Path(str(self.source))
         return file.open('r')
 
-    def get_dialect(self) -> Type[Dialect] :
+    def get_dialect(self) -> Type[Dialect]:
         """
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
@@ -27,7 +27,7 @@ class FileReader:
             return dialect
         file.close()
 
-    def __get_row_count(self) -> int :
+    def __get_row_count(self) -> int:
         """
         Private method to get the amount of rows that 
         the file contains, excluding the headers row.
@@ -40,7 +40,7 @@ class FileReader:
         file.close()
         return row_count
 
-    def get_headers(self) -> list :
+    def get_headers(self) -> list:
         """
         Return the headers on a file.
         """
@@ -51,7 +51,7 @@ class FileReader:
         file.close()
 
 
-    def get_all_rows(self) -> list :
+    def get_all_rows(self) -> list:
         """
         Get the content of all the rows in the file.
         """
@@ -63,7 +63,7 @@ class FileReader:
         file.close()
         return row_container
 
-    def slice(self) -> dict :
+    def slice(self) -> dict:
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
@@ -115,4 +115,28 @@ class FileReader:
             else:
                 return [list]
         return sever(parser_iterable, number_of_parts)
+
+    def create(self):
+        """
+         Create a new CSV file using the class'
+         source as the name
+         """
+        with open(self.source, mode='x') as new_file:
+            new_file.close()
+
+    def overwrite(self, rows_object):
+        """
+        Write rows to the file (after truncating it)
+        """
+        def identify_rows_structure(rows_container):
+            return type(rows_container)
+
+        # print(identify_rows_structure(rows_object))
+        
+        with open(self.source, 'w') as file:
+            file_writer = writer(file, dialect=self.get_dialect())
+            for row in rows_object:
+                # print(row)
+                file_writer.writerow(row)
+            file.close()
             
