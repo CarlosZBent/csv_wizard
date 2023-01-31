@@ -128,15 +128,15 @@ class FileReader:
         """
         Write rows to the file (after truncating it)
         """
-        def identify_rows_structure(rows_container):
-            return type(rows_container)
-
-        # print(identify_rows_structure(rows_object))
-        
+        # def identify_rows_structure(rows_container):
+        #     return type(rows_container)
+        print(rows_object)
         with open(self.source, 'w') as file:
             file_writer = writer(file, dialect=self.get_dialect())
             for row in rows_object:
-                # print(row)
-                file_writer.writerow(row)
-            file.close()
+                if len(row) > 0:
+                    file_writer.writerow(row)
+                else:
+                    print('empty row')
+        file.close()
             
