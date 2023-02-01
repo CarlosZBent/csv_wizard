@@ -40,7 +40,7 @@ class FileReader:
         file.close()
         return row_count
 
-    def get_headers(self) -> list:
+    def get_headers(self) -> list[str]:
         """
         Return the headers on a file.
         """
@@ -92,7 +92,7 @@ class FileReader:
             }
         return master_container
 
-    def divide(self, number_of_parts) -> list:
+    def divide(self, number_of_parts:int) -> list:
         """
         Divide the file in the amount of parts indicated by the user.
         """
@@ -108,7 +108,7 @@ class FileReader:
             parser_iterable.append(line)
         file.close()
         parser_iterable.pop(0)
-        def sever(list, n) -> list :
+        def sever(list, n) -> list:
             p = len(list) // n
             if len(list)-p > 0:
                 return [list[:p]] + sever(list[p:], n-1)
@@ -116,7 +116,7 @@ class FileReader:
                 return [list]
         return sever(parser_iterable, number_of_parts)
 
-    def create(self):
+    def create(self) -> None:
         """
          Create a new CSV file using the class'
          source as the name
@@ -124,7 +124,7 @@ class FileReader:
         with open(self.source, mode='x') as new_file:
             new_file.close()
 
-    def overwrite(self, rows_object:list) -> None:
+    def overwrite(self, rows_object:list[list[str]]) -> None:
         """
         Write rows to the file (after truncating it)
         """
@@ -133,7 +133,7 @@ class FileReader:
             file_writer.writerows(rows_object)
             file.close()
 
-    def append_rows(self, rows_object:list[list[str]]):
+    def append_rows(self, rows_object:list[list[str]]) -> None:
         """
         Append rows at the end of a file 
         without deleting the existing rows
@@ -146,7 +146,7 @@ class FileReader:
         # overwrite the resulting list into the file
         self.overwrite(rows)
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         """
         delete empty rows on the file
         """
@@ -156,17 +156,12 @@ class FileReader:
             parser_iterable = []
             for line in parser:
                 parser_iterable.append(line)
-            print('initial length=',len(parser_iterable))
-            print('CLEANING UP...')
             for row in parser_iterable: 
                 dummy = []
                 try:
                     while len(row) == 0:
                         index = parser_iterable.index(row)
                         parser_iterable.pop(index)
-                        print('list length =',len(parser_iterable),' - index removed =',index)
                 except ValueError:
-                        print('loop finished => length=',len(parser_iterable))
-                        print('Are there any empty rows? ', dummy in parser_iterable)
                         self.overwrite(parser_iterable)
             file.close()
