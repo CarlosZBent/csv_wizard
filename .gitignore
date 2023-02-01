@@ -1,3 +1,4 @@
 *.csv
 /.vscode
 testing.py
+/__pycache__
