@@ -128,17 +128,10 @@ class FileReader:
         """
         Write rows to the file (after truncating it)
         """
-        # def identify_rows_structure(rows_container):
-        #     return type(rows_container)
-        print(rows_object)
-        with open(self.source, 'w') as file:
+        with open(self.source, 'w', newline='') as file:
             file_writer = writer(file, dialect=self.get_dialect())
-            for row in rows_object:
-                if len(row) > 0:
-                    file_writer.writerow(row)
-                else:
-                    print('empty row')
-        file.close()
+            file_writer.writerows(rows_object)
+            file.close()
             
     def cleanup(self):
         """
@@ -162,4 +155,5 @@ class FileReader:
                 except ValueError:
                         print('loop finished => length=',len(parser_iterable))
                         print('Are there any empty rows? ', dummy in parser_iterable)
+                        self.overwrite(parser_iterable)
             file.close()
