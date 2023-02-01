@@ -124,7 +124,7 @@ class FileReader:
         with open(self.source, mode='x') as new_file:
             new_file.close()
 
-    def overwrite(self, rows_object):
+    def overwrite(self, rows_object:list) -> None:
         """
         Write rows to the file (after truncating it)
         """
@@ -140,3 +140,26 @@ class FileReader:
                     print('empty row')
         file.close()
             
+    def cleanup(self):
+        """
+        delete empty rows on the file
+        """
+        with open(self.source, 'r') as file:
+            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            count = 0
+            parser_iterable = []
+            for line in parser:
+                parser_iterable.append(line)
+            print('initial length=',len(parser_iterable))
+            print('CLEANING UP...')
+            for row in parser_iterable: 
+                dummy = []
+                try:
+                    while len(row) == 0:
+                        index = parser_iterable.index(row)
+                        parser_iterable.pop(index)
+                        print('list length =',len(parser_iterable),' - index removed =',index)
+                except ValueError:
+                        print('loop finished => length=',len(parser_iterable))
+                        print('Are there any empty rows? ', dummy in parser_iterable)
+            file.close()
