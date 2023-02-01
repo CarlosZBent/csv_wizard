@@ -132,7 +132,20 @@ class FileReader:
             file_writer = writer(file, dialect=self.get_dialect())
             file_writer.writerows(rows_object)
             file.close()
-            
+
+    def append_rows(self, rows_object:list[list[str]]):
+        """
+        Append rows at the end of a file 
+        without deleting the existing rows
+        """
+        # read the existing and rows
+        rows = self.get_all_rows()
+        # append the new rows object to the existing ones
+        for i in rows_object:
+            rows.append(i)
+        # overwrite the resulting list into the file
+        self.overwrite(rows)
+
     def cleanup(self):
         """
         delete empty rows on the file
