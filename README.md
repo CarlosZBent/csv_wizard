@@ -11,15 +11,19 @@ The dialect property contains:
 * delimiter
 * quotechar
 * skipinitialspace
-> ``new_file.get_dialect().delimiter``
+> `new_file.get_dialect().delimiter`
 
-> ``new_file.get_dialect().lineterminator``
+> `new_file.get_dialect().lineterminator`
 
-> ``new_file.get_dialect().quoting``
+> `new_file.get_dialect().quoting`
 ***
 
 ## Opening the file. The **private method** `__open()`.
 It returns a `TextIO` type object with the open CSV file in read mode.
+***
+## Creating a new CSV file. The `create()` method.
+It receives a string as only argument and it creates a new CSV file using that string.
+***
 ## Getting the headers row. The `get_headers()` method.
 Returns only the first line on the CSV file, which is presumed to be the one containing the headers.
 > ``new_file.get_headers()`` # ["Name", "Email"]
@@ -45,3 +49,13 @@ Returns a list containing smaller lists that in themselves contain equal amounts
 
 The headers are not included on any of the returned lists. That must be obtained with the `get_headers()` method.
 > `new_file.divide(3)` # `[[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15]]`
+***
+## Deleting everything in the CSV file and adding new rows. The `overwrite()` method.
+The `overwrite()` method taks as argument an object with a structure of `list[list[str]]`. It is the kind of object returned by the reading methods in the library like `slice()` or `divide()`.
+The file is truncated (all the content is deleted) and the object is usedd to add new rows to the file.
+***
+## Adding new rows without deleting the existing ones. The `append_rows()` method.
+It takes an argument of the same kind of object as the `overwrite()` method, that is, a `list[list[str]]`. It adds the rows in that object to the file below the already existing rows.
+***
+## In case there's empty rows in the file. The `cleanup()` method.
+Executing this method on a `FileReader` instance will delete all blank rows from a CSV file.

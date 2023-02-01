@@ -15,6 +15,14 @@ class FileReader:
         file = Path(str(self.source))
         return file.open(mode)
 
+    @staticmethod
+    def create(name:str) -> None:
+        """
+        Create a new CSV file
+        """
+        with open(f'{str(name)}.csv', mode='x') as new_file:
+            new_file.close()
+
     def get_dialect(self) -> Type[Dialect]:
         """
         Return the dialect from the file. The dialect contains properties 
@@ -116,14 +124,6 @@ class FileReader:
                 return [list]
         return sever(parser_iterable, number_of_parts)
 
-    def create(self) -> None:
-        """
-         Create a new CSV file using the class'
-         source as the name
-         """
-        with open(self.source, mode='x') as new_file:
-            new_file.close()
-
     def overwrite(self, rows_object:list[list[str]]) -> None:
         """
         Write rows to the file (after truncating it)
@@ -157,7 +157,6 @@ class FileReader:
             for line in parser:
                 parser_iterable.append(line)
             for row in parser_iterable: 
-                dummy = []
                 try:
                     while len(row) == 0:
                         index = parser_iterable.index(row)
