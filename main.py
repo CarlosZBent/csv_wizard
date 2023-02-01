@@ -1,4 +1,4 @@
-from typing import Type, TextIO
+from typing import Type, IO
 from pathlib import Path
 from csv import reader, writer, Sniffer, Dialect
 
@@ -8,19 +8,19 @@ class FileReader:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
 
-    def __open(self) -> TextIO:
+    def __open(self, mode:str) -> IO:
         """
         Private method to open the file in read mode
         """
         file = Path(str(self.source))
-        return file.open('r')
+        return file.open(mode)
 
     def get_dialect(self) -> Type[Dialect]:
         """
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file)
         for row in parser:
             dialect = Sniffer().sniff(str(row))
@@ -32,7 +32,7 @@ class FileReader:
         Private method to get the amount of rows that 
         the file contains, excluding the headers row.
         """
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_count = -1
         for line in parser:
@@ -44,7 +44,7 @@ class FileReader:
         """
         Return the headers on a file.
         """
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         for line in parser:
             return line
@@ -55,7 +55,7 @@ class FileReader:
         """
         Get the content of all the rows in the file.
         """
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_container = []
         for line in parser:
@@ -68,7 +68,7 @@ class FileReader:
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
         """
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         # original csv.reader object is not iterable
         # saving it's elements to this iterable gives greater flexibility
@@ -98,7 +98,7 @@ class FileReader:
         """
         if type(number_of_parts) == float:
             raise TypeError("number_of_parts must be of type integer")
-        file = self.__open()
+        file = self.__open('r')
         parser = reader(file, delimiter=self.get_dialect().delimiter)
         row_count = self.__get_row_count()
         if number_of_parts > row_count:
