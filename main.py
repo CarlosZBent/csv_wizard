@@ -142,7 +142,7 @@ class FileReader:
             file_writer.writerows(rows_object)
             file.close()
 
-    def append_rows(self, rows_object:list[list[str]]) -> None:
+    def append_rows(self, rows_object:list[list[str]], append_on_top:bool=False) -> None:
         """
         Append rows at the end of a file 
         without deleting the existing rows
@@ -151,7 +151,10 @@ class FileReader:
         rows = self.get_all_rows()
         # append the new rows object to the existing ones
         for i in rows_object:
-            rows.append(i)
+            if append_on_top:
+                rows.insert(1, i)
+            else:
+                rows.append(i)
         # overwrite the resulting list into the file
         self.overwrite(rows)
 
@@ -161,7 +164,6 @@ class FileReader:
         """
         with open(self.source, 'r') as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
-            count = 0
             parser_iterable = []
             for line in parser:
                 parser_iterable.append(line)
