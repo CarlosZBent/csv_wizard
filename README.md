@@ -50,7 +50,11 @@ Returns a list containing smaller lists that in themselves contain equal amounts
 The headers are not included on any of the returned lists. That must be obtained with the `get_headers()` method.
 > `new_file.divide(3)` # `[[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15]]`
 ***
-## Deleting everything in the CSV file and adding new rows. The `overwrite()` method.
+## Adding a headers row to a file. The `write_headers()` method.
+This method takes a list as the only argument. It expects a list with the same format as outputed by the `get_headers()` method.
+It can be used on a file with data as well as an empty one.
+***
+## Overwriting the whole file with a new set of rows. The `overwrite()` method.
 The `overwrite()` method taks as argument an object with a structure of `list[list[str]]`. It is the kind of object returned by the reading methods in the library like `slice()` or `divide()`.
 The file is truncated (all the content is deleted) and the object is usedd to add new rows to the file.
 ***

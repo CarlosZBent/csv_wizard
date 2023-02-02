@@ -124,9 +124,18 @@ class FileReader:
                 return [list]
         return sever(parser_iterable, number_of_parts)
 
+    def write_headers(self, headers_object:list[str]) -> None:
+        """
+        Write the headers to a file.
+        The file can be empty or have data
+        """
+        rows = self.get_all_rows()
+        rows.insert(0, headers_object)
+        self.overwrite(rows)
+
     def overwrite(self, rows_object:list[list[str]]) -> None:
         """
-        Write rows to the file (after truncating it)
+        Write rows to a file (after truncating it)
         """
         with open(self.source, 'w', newline='') as file:
             file_writer = writer(file, dialect=self.get_dialect())
