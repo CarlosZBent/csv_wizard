@@ -1,7 +1,7 @@
 # CSV Divider
-👷‍♀️ **Beta stage software. Work in progress** 🚧
+👷‍♀️ **Alpha stage software! Work in progress** 🚧
 
-**Any suggestion, request or PR is appreciated** 🙂
+**Any suggestion or request is appreciated** 🙂
 ***
 ### Import a CSV file by only giving the `FileReader` class a `string` containing the full name of the file without the *.csv* part.
 > `new_file = FileReader("my_file")`
