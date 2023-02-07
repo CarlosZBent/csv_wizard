@@ -66,7 +66,10 @@ The file is truncated (all the content is deleted) and the object is usedd to ad
 It takes an argument of the same kind of object as the `overwrite()` method, that is, a `list[list[str]]`. It adds the rows in that object to the file below the already existing rows.
 ### Appending the set of rows at the top of the file.
 The `append_rows()` method accepts an optional boolean argument called `append_on_top`. By default its set to `False`, which makes the method append the new rows **below** the existing rows. 
+
 If set to `True`, the `append_on_top` argument makes the method place the new rows **on top** of the file, just below the headers, moving down the existing rows.
+
+After the rows are appended, they will be seen in reverse order on the file. The last element on the `rows_object` will be on top at the file.
 ***
-## In case there's empty rows in the file. The `cleanup()` method.
+## **UNSTABLE**. In case there's empty rows in the file. The `cleanup()` method.
 Executing this method on a `FileReader` instance will delete all blank rows from a CSV file.
