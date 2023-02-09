@@ -9,7 +9,7 @@ class FileReader:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
 
-    def __get_encoding(self):
+    def get_encoding(self):
         """
         Detect the encoding of the file
         """
@@ -17,13 +17,6 @@ class FileReader:
             line = file.readline()
             encoding = detect(line)['encoding']
             return encoding
-
-    # def __open(self, mode:str) -> IO:
-    #     """
-    #     Private method to open the file in read mode
-    #     """
-    #     file = Path(str(self.source))
-    #     return file.open(mode)
 
     @staticmethod
     def create(name:str) -> None:
@@ -38,7 +31,7 @@ class FileReader:
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file)
             for row in parser:
                 dialect = Sniffer().sniff(str(row))
@@ -49,7 +42,7 @@ class FileReader:
         Private method to get the amount of rows that 
         the file contains, excluding the headers row.
         """
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             try:
                 parser = reader(file, delimiter=self.get_dialect().delimiter)
                 row_count = -1
@@ -66,7 +59,7 @@ class FileReader:
         """
         Return the headers on a file.
         """
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             for line in parser:
                 return line
@@ -75,7 +68,7 @@ class FileReader:
         """
         Get the content of all the rows in the file.
         """
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             row_container = []
             for line in parser:
@@ -87,7 +80,7 @@ class FileReader:
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
         """
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             # original csv.reader object is not iterable
             # saving it's elements to this iterable gives greater flexibility
@@ -117,7 +110,7 @@ class FileReader:
         """
         if type(number_of_parts) == float:
             raise TypeError("number_of_parts must be of type integer")
-        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+        with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             row_count = self.__get_row_count()
             if number_of_parts > row_count:

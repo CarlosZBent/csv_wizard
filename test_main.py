@@ -1,6 +1,18 @@
+from pytest import raises
+
 from main import FileReader
 
 test_file = FileReader('')
+
+# encoding tests
+
+def test_get_encoding_returns_string():
+    enc = test_file.get_encoding()
+    assert type(enc) == str
+
+def test_get_encoding():
+    enc = test_file.get_encoding()
+    assert enc == 'ascii'
 
 # dialect tests
 def test_get_dialect_type_is_object():
@@ -76,6 +88,14 @@ def test_slice():
     assert len(parts['First_Half']) == 44 and len(parts['Second_Half']) == 43
 
 # test divide()
+
+def test_divide_raises_error_for_float_argument():
+    with raises(TypeError):
+        test_file.divide(4.5)
+
+def test_divide_raises_error_for_number_of_parts_greater_than_row_count():
+    with raises(IndexError):
+        test_file.divide(95)
 
 def test_divide_type_is_list():
     parts = test_file.divide(4)
