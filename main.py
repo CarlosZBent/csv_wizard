@@ -19,12 +19,12 @@ class FileReader:
             print(encoding)
             return encoding
 
-    def __open(self, mode:str) -> IO:
-        """
-        Private method to open the file in read mode
-        """
-        file = Path(str(self.source))
-        return file.open(mode)
+    # def __open(self, mode:str) -> IO:
+    #     """
+    #     Private method to open the file in read mode
+    #     """
+    #     file = Path(str(self.source))
+    #     return file.open(mode)
 
     @staticmethod
     def create(name:str) -> None:
@@ -39,20 +39,18 @@ class FileReader:
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
-        file = self.__open('r')
-        parser = reader(file)
-        for row in parser:
-            dialect = Sniffer().sniff(str(row))
-            return dialect
-        file.close()
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+            parser = reader(file)
+            for row in parser:
+                dialect = Sniffer().sniff(str(row))
+                return dialect
 
     def __get_row_count(self) -> int:
         """
         Private method to get the amount of rows that 
         the file contains, excluding the headers row.
         """
-        encoding = self.__get_encoding()
-        with open(self.source, 'r', encoding=encoding) as file:
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             row_count = -1
             for line in parser:
@@ -63,32 +61,28 @@ class FileReader:
         """
         Return the headers on a file.
         """
-        file = self.__open('r')
-        parser = reader(file, delimiter=self.get_dialect().delimiter)
-        for line in parser:
-            return line
-        file.close()
-
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            for line in parser:
+                return line
 
     def get_all_rows(self) -> list:
         """
         Get the content of all the rows in the file.
         """
-        file = self.__open('r')
-        parser = reader(file, delimiter=self.get_dialect().delimiter)
-        row_container = []
-        for line in parser:
-            row_container.append(line)
-        file.close()
-        return row_container
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            row_container = []
+            for line in parser:
+                row_container.append(line)
+            return row_container
 
     def slice(self) -> dict:
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
         """
-        encoding = self.__get_encoding()
-        with open(self.source, 'r', encoding=str(encoding)) as file:
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             # original csv.reader object is not iterable
             # saving it's elements to this iterable gives greater flexibility
@@ -118,23 +112,22 @@ class FileReader:
         """
         if type(number_of_parts) == float:
             raise TypeError("number_of_parts must be of type integer")
-        file = self.__open('r')
-        parser = reader(file, delimiter=self.get_dialect().delimiter)
-        row_count = self.__get_row_count()
-        if number_of_parts > row_count:
-            raise IndexError('number_of_parts is greater than row_count')
-        parser_iterable = []
-        for line in parser:
-            parser_iterable.append(line)
-        file.close()
-        parser_iterable.pop(0)
-        def sever(list, n) -> list:
-            p = len(list) // n
-            if len(list)-p > 0:
-                return [list[:p]] + sever(list[p:], n-1)
-            else:
-                return [list]
-        return sever(parser_iterable, number_of_parts)
+        with open(self.source, 'r', encoding=self.__get_encoding()) as file:
+            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            row_count = self.__get_row_count()
+            if number_of_parts > row_count:
+                raise IndexError('number_of_parts is greater than row_count')
+            parser_iterable = []
+            for line in parser:
+                parser_iterable.append(line)
+            parser_iterable.pop(0)
+            def sever(list, n) -> list:
+                p = len(list) // n
+                if len(list)-p > 0:
+                    return [list[:p]] + sever(list[p:], n-1)
+                else:
+                    return [list]
+            return sever(parser_iterable, number_of_parts)
 
     def write_headers(self, headers_object:list[str]) -> None:
         """
@@ -186,4 +179,3 @@ class FileReader:
                         parser_iterable.pop(index)
                 except ValueError:
                         self.overwrite(parser_iterable)
-            file.close()
