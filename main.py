@@ -16,7 +16,6 @@ class FileReader:
         with open(self.source, 'rb') as file:
             line = file.readline()
             encoding = detect(line)['encoding']
-            print(encoding)
             return encoding
 
     # def __open(self, mode:str) -> IO:
@@ -51,11 +50,17 @@ class FileReader:
         the file contains, excluding the headers row.
         """
         with open(self.source, 'r', encoding=self.__get_encoding()) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
-            row_count = -1
-            for line in parser:
-                row_count += 1
-            return row_count
+            try:
+                parser = reader(file, delimiter=self.get_dialect().delimiter)
+                row_count = -1
+                for line in parser:
+                    row_count += 1
+                return row_count
+            except UnicodeDecodeError as e:
+                # if there is an error while decoding it will be catched
+                # here because its the first method called by the methods
+                # that perform operations on the file data
+                print(f"The file contains encoding inconsistencies => {e}")
 
     def get_headers(self) -> list[str]:
         """
