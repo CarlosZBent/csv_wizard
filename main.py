@@ -1,4 +1,4 @@
-from typing import Type, IO
+from typing import Type
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
 
@@ -42,17 +42,12 @@ class FileReader:
         the file contains, excluding the headers row.
         """
         with open(self.source, 'r', encoding=self.get_encoding()) as file:
-            try:
-                parser = reader(file, delimiter=self.get_dialect().delimiter)
-                row_count = -1
-                for line in parser:
-                    row_count += 1
-                return row_count
-            except UnicodeDecodeError as e:
-                # if there is an error while decoding it will be catched
-                # here because its the first method called by the methods
-                # that perform operations on the file data
-                print(f"The file contains encoding inconsistencies => {e}")
+            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            row_count = -1
+            for line in parser:
+                row_count += 1
+            return row_count
+
 
     def get_headers(self) -> list[str]:
         """
@@ -160,19 +155,33 @@ class FileReader:
         # overwrite the resulting list into the file
         self.overwrite(rows)
 
-    def find_common_rows(self, second_file) -> list[list[str]]:
+    def find_common_rows(self, second_file:'FileReader') -> list[list[str]]:
         """
-        Find the rows that are on one file but no the other
+        Find the rows that are on both files
         """
         all_rows_1 = self.get_all_rows()
         all_rows_2 = second_file.get_all_rows()
         common_items = []
+
         for item in all_rows_1:
             if item in all_rows_2[1:]:
                 common_items.append(item)
         return common_items
+    
+    def find_different_rows(self, second_file:'FileReader') -> list[list[str]]:
+        """
+        Returns the rows that are on the first file
+        but not on the second one
+        """
+        common_rows = self.find_common_rows(second_file)
+        rows = self.get_all_rows()
 
- # type: ignore
+        for item in common_rows:
+            if item in rows:
+                index = rows.index(item)
+                rows.pop(index)
+        return rows
+        
     def cleanup(self) -> None:
         """
         delete empty rows on the file
