@@ -2,8 +2,8 @@ from pytest import raises
 
 from main import FileReader
 
-test_file = FileReader('')
-test_file2 = FileReader('')
+test_file = FileReader('employees_from_excel')
+test_file2 = FileReader('employees_from_excel2')
 
 # encoding tests
 
@@ -76,7 +76,7 @@ def test_get_all_rows_element_type_child_is_string():
 
 def test_get_all_rows():
     all_rows = test_file.get_all_rows()
-    assert len(all_rows) == 88
+    assert len(all_rows) == 9
 
 # test slice()
 
@@ -86,7 +86,7 @@ def test_slice_type_is_dict():
 
 def test_slice():
     parts = test_file.slice()
-    assert len(parts['First_Half']) == 44 and len(parts['Second_Half']) == 43
+    assert len(parts['First_Half']) == 5 and len(parts['Second_Half']) == 4
 
 # test find_common_rows()
 
@@ -96,7 +96,11 @@ def test_find_common_rows_returns_list():
 
 def test_find_common_rows():
     common = test_file.find_common_rows(test_file2)
-    assert common == []
+    assert common == [['Wade, Amber', 'amber@firstduesizeup.com'], ['Williams, Michael', 'michael.williams@firstdue.com'], ['Williams, Stephen', 'stephen@firstduesizeup.com'], ['York, Todd', 'todd.york@firstdue.com'], ['Young, Brandon', 'brandon.young@firstdue.com'], ['Zeller, Phill', 'phil.zeller@firstdue.com']]
+
+def test_find_common_rows_incorrect_argument_type():
+    with raises(AttributeError):
+        test_file.find_common_rows(['dummy list'])
 
 # test find_different_rows()
 
@@ -106,7 +110,11 @@ def test_find_different_rows_returns_list():
 
 def test_find_different_rows():
     common = test_file.find_different_rows(test_file2)
-    assert common == []
+    assert common == [['Name', 'Work Email'], ['Madeline Lorch', 'madeline.lorch@firstdue.com'], ['Alex Faust', 'alex.faust@firstdue.com ']]
+
+def test_find_different_rows_incorrect_argument_type():
+    with raises(AttributeError):
+        test_file.find_different_rows(['dummy list'])
 
 # test divide()
 
@@ -128,9 +136,9 @@ def test_divide_elem_type_is_list():
         assert type(elem) == list
 
 def test_divide():
-  parts = test_file.divide(4)
+  parts = test_file.divide(3)
   for elem in parts:
-      assert len(elem) <= 22
+      assert len(elem) <= 3
 
 # test_write_headers()
 
