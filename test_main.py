@@ -2,8 +2,8 @@ from pytest import raises
 
 from main import FileReader
 
-test_file = FileReader('employees_from_excel')
-test_file2 = FileReader('employees_from_excel2')
+test_file = FileReader('')
+test_file2 = FileReader('')
 
 # encoding tests
 
