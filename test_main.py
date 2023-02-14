@@ -2,7 +2,8 @@ from pytest import raises
 
 from main import FileReader
 
-test_file = FileReader('')
+test_file = FileReader('employees_from_excel')
+test_file2 = FileReader('employees_from_excel2')
 
 # encoding tests
 
@@ -43,7 +44,7 @@ def test_skipinitialspace_type_is_bool():
     skipinitialspace = test_file.get_dialect().skipinitialspace
     assert type(skipinitialspace) == bool
 
-# row count tests
+# get headers tests
 def test_get_headers_type_is_list():
     headers = test_file.get_headers()
     assert type(headers) == list
@@ -86,6 +87,16 @@ def test_slice_type_is_dict():
 def test_slice():
     parts = test_file.slice()
     assert len(parts['First_Half']) == 44 and len(parts['Second_Half']) == 43
+
+# test find_common_rows()
+
+def test_find_common_rows_returns_list():
+    common = test_file.find_common_rows(test_file2)
+    assert type(common) == list
+
+def test_find_common_rows():
+    common = test_file.find_common_rows(test_file2)
+    assert common == []
 
 # test divide()
 

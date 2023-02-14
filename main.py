@@ -1,5 +1,4 @@
 from typing import Type, IO
-from pathlib import Path
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
 
@@ -161,6 +160,19 @@ class FileReader:
         # overwrite the resulting list into the file
         self.overwrite(rows)
 
+    def find_common_rows(self, second_file) -> list[list[str]]:
+        """
+        Find the rows that are on one file but no the other
+        """
+        all_rows_1 = self.get_all_rows()
+        all_rows_2 = second_file.get_all_rows()
+        common_items = []
+        for item in all_rows_1:
+            if item in all_rows_2[1:]:
+                common_items.append(item)
+        return common_items
+
+ # type: ignore
     def cleanup(self) -> None:
         """
         delete empty rows on the file
