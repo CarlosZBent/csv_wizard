@@ -71,5 +71,31 @@ If set to `True`, the `append_on_top` argument makes the method place the new ro
 
 After the rows are appended, they will be seen in reverse order on the file. The last element on the `rows_object` will be on top at the file.
 ***
+### Getting the common rows between two instances of the FileReader class. The `find_common_rows()` method.
+The `find_common_rows()` method compares the complete set of rows of two instances of the FileReader class and returns a list containing the rows that are present on both instances. One FileReader instance is the one the method is called on, the other one is passed as an argument.
+```
+file1 = FileReader('fileNo1')
+file2 = FileReader('fileNo2')
+file1.find_common_rows(file2)
+> [["row1"], ["row2], ["row3]] 
+```
+
+***
+### Finding the different rows between two instances of the FileReader class. The `find_different_rows()` method.
+The `find_different_rows()` method compares the complete set of rows of two instances of the FileReader class and returns a list containing only the rows that are present on the firts file but not on the second. One FileReader instance is the one the method is called on, the other one is passed as an argument.
+```
+file1 = FileReader('fileNo1')
+file2 = FileReader('fileNo2')
+file1.find_different_rows(file2)
+> [["row5"], ["row8], ["row14]] 
+```
+```
+file1 = FileReader('fileNo1')
+file2 = FileReader('fileNo2')
+file2.find_different_rows(file1)
+> [["row1"], ["row4], ["row34]] 
+```
+
+***
 ## **UNSTABLE**. In case there's empty rows in the file. The `cleanup()` method.
 Executing this method on a `FileReader` instance will delete all blank rows from a CSV file.
