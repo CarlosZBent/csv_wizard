@@ -3,7 +3,7 @@ from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
 
 
-class FileReader:
+class CSVParser:
     def __init__(self, source:str) -> None:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{source}.csv'
@@ -155,7 +155,7 @@ class FileReader:
         # overwrite the resulting list into the file
         self.overwrite(rows)
 
-    def find_common_rows(self, second_file:'FileReader') -> list[list[str]]:
+    def find_common_rows(self, second_file:'CSVParser') -> list[list[str]]:
         """
         Find the rows that are on both files
         """
@@ -168,7 +168,7 @@ class FileReader:
                 common_items.append(item)
         return common_items
     
-    def find_different_rows(self, second_file:'FileReader') -> list[list[str]]:
+    def find_different_rows(self, second_file:'CSVParser') -> list[list[str]]:
         """
         Returns the rows that are on the first file
         but not on the second one
