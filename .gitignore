@@ -2,3 +2,7 @@
 /.vscode
 testing.py
 /__pycache__
+/build
+/dist
+/csv_parser.egg-info
+setup.py
