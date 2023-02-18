@@ -1,9 +1,14 @@
+from pytest import raises
 from ..csv_parser import CSVParser
 
 test_file = CSVParser('')
 test_file2 = CSVParser('')
 
+# test empty file
 
+def test_opening_empty_file_returns_attributeerror():
+    with raises(AttributeError):
+        test_file.get_headers()
 
 # test_write_headers()
 
