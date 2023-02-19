@@ -97,5 +97,13 @@ file2.find_different_rows(file1)
 ```
 
 ***
+### Finding duplicate rows in a file. The `get_duplicates()` method.
+When called on an instance of the CSVParser class, this method will return a dictionary with the following format: `{'row_name': number_of occurrences}`
+```
+file1 = CSVParser('fileNo1')
+file1.get_duplicates()
+> {"[' Alex ', 'alex@mail.com']": 2, "[' Adriana ', 'adriana@mail.com']": 5}
+```
+***
 ## **UNSTABLE**. In case there's empty rows in the file. The `cleanup()` method.
 Executing this method on a `CSVParser` instance will delete all blank rows from a CSV file.

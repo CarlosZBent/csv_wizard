@@ -1,6 +1,7 @@
 from typing import Type
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
+from collections import Counter
 
 
 class CSVParser:
@@ -181,6 +182,26 @@ class CSVParser:
                 index = rows.index(item)
                 rows.pop(index)
         return rows
+    
+    def get_duplicates(self) -> dict:
+        """
+        Find duplicate rows and the number of occurrences for each one
+        """
+        rows = self.get_all_rows()
+
+        dups_dict = {}
+
+        for i in rows:
+            # iterate over the file's rows
+            if rows.count(i) > 1:
+                # if the count for this element is > 1 is duplicated
+                # add that element and it's count to the dict
+                dups_dict.update({str(i): rows.count(i)})
+
+        if len(dups_dict) > 0:
+            return dups_dict
+        else:
+            return {"Result": "No duplicate rows in the file"}
         
     def cleanup(self) -> None:
         """
