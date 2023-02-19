@@ -1,7 +1,9 @@
 *.csv
 /.vscode
 testing.py
-/__pycache__
+/**__pycache__
+tests/__pycache__
+**/.pytest_cache
 /build
 /dist
 /csv_parser.egg-info
