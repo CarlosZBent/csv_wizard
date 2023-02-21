@@ -1,7 +1,6 @@
 from typing import Type
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
-from collections import Counter
 
 
 class CSVParser:
@@ -16,7 +15,7 @@ class CSVParser:
         with open(self.source, 'rb') as file:
             line = file.readline()
             encoding = detect(line)['encoding']
-            return encoding
+            return str(encoding)
 
     @staticmethod
     def create(name:str) -> None:
@@ -26,23 +25,27 @@ class CSVParser:
         with open(f'{str(name)}.csv', mode='x') as new_file:
             new_file.close()
 
-    def get_dialect(self) -> Type[Dialect]:
+    def get_dialect(self, encoding:str='utf-8') -> Type[Dialect]:
         """
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file)
             for row in parser:
                 dialect = Sniffer().sniff(str(row))
                 return dialect
 
-    def __get_row_count(self) -> int:
+    def __get_row_count(self, encoding:str='utf-8') -> int:
         """
         Private method to get the amount of rows that 
         the file contains, excluding the headers row.
         """
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             row_count = -1
             for line in parser:
@@ -50,20 +53,24 @@ class CSVParser:
             return row_count
 
 
-    def get_headers(self) -> list[str]:
+    def get_headers(self, encoding:str='utf-8') -> list[str]:
         """
         Return the headers on a file.
         """
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             for line in parser:
                 return line
 
-    def get_all_rows(self) -> list:
+    def get_all_rows(self, encoding:str='utf-8') -> list:
         """
         Get the content of all the rows in the file.
         """
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
             row_container = []
             for line in parser:
