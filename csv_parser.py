@@ -170,10 +170,14 @@ class CSVParser:
         all_rows_1 = self.get_all_rows()
         all_rows_2 = second_file.get_all_rows()
         common_items = []
-
+        
+        count = 0
+        
         for item in all_rows_1:
             if item in all_rows_2[1:]:
+                count+=1
                 common_items.append(item)
+                print(f"found - {count}")
         return common_items
     
     def find_different_rows(self, second_file:'CSVParser') -> list[list[str]]:
