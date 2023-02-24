@@ -25,17 +25,19 @@ The dialect property contains:
 ## Opening the file. The **private method** `__open()`.
 It returns a `TextIO` type object with the open CSV file in read mode.
 ***
-## Creating a new CSV file. The `create()` method.
-It receives a string as only argument and it creates a new CSV file using that string.
+## The `__create()` **private method**. And an easier way to create a file.
+The create method receives a string as only argument and it creates a new CSV file using that string.
+
+However, is the `CSVParser` class is instantiated using the name of a file that doesn't exist, it will create it and treat it as any other class instance.
 ***
 ## Getting the headers row. The `get_headers()` method.
 Returns only the first line on the CSV file, which is presumed to be the one containing the headers.
 > ``new_file.get_headers()`` # ["Name", "Email"]
 
 ***
-## Getting the total number of rows in the CSV file. The **private method** `__get_row_count()`.
+## Getting the total number of rows in the CSV file. The `get_row_count()` method.
 This method is used internally by other methods to be know how many rows a file has. It returns the number of rows that the file contains, without taking into account the headers row.
-> `new_file.__get_row_count()` # 45
+> `new_file.get_row_count()` # 45
 ***
 ## Getting the content of all rows in the CSV file. The `get_all_rows()` method.
 Returns a list containing the content of each individual row, including the header row. This is different from `get_row_count()` in that it returns the complete content of the rows, not only how many there are.

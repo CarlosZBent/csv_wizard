@@ -18,7 +18,7 @@ class CSVParser:
             return str(encoding)
 
     @staticmethod
-    def create(name:str) -> None:
+    def __create(name:str) -> None:
         """
         Create a new CSV file
         """
@@ -38,9 +38,9 @@ class CSVParser:
                 dialect = Sniffer().sniff(str(row))
                 return dialect
 
-    def __get_row_count(self, encoding:str='utf-8') -> int:
+    def get_row_count(self, encoding:str='utf-8') -> int:
         """
-        Private method to get the amount of rows that 
+        Method to get the amount of rows that 
         the file contains, excluding the headers row.
         """
         if not encoding:
