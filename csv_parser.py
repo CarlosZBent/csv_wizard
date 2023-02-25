@@ -1,12 +1,16 @@
 from typing import Type
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
+from dataclasses import dataclass
 
 
+@dataclass
 class CSVParser:
-    def __init__(self, source:str) -> None:
+    source:str
+
+    def __post_init__(self) -> None:
         # concat the .csv extension so it is not necessary when instatiating
-        self.source = f'{source}.csv'
+        self.source = f'{self.source}.csv'
 
     def get_encoding(self):
         """
