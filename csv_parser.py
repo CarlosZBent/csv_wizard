@@ -93,7 +93,7 @@ class CSVParser:
             parser_iterable = []
             row_container1 = []
             row_container2 = []
-            half = int(self.__get_row_count())/2
+            half = int(self.get_row_count())/2
             for line in parser:
                 parser_iterable.append(line)
                 # slice the parser_iterable after it's first item 
@@ -118,7 +118,7 @@ class CSVParser:
             raise TypeError("number_of_parts must be of type integer")
         with open(self.source, 'r', encoding=self.get_encoding()) as file:
             parser = reader(file, delimiter=self.get_dialect().delimiter)
-            row_count = self.__get_row_count()
+            row_count = self.get_row_count()
             if number_of_parts > row_count:
                 raise IndexError('number_of_parts is greater than row_count')
             parser_iterable = []
