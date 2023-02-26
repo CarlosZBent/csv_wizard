@@ -39,7 +39,6 @@ class CSVParser:
             encoding = self.get_encoding()
         print('encoding 2: ', encoding)
         with open(self.source, 'r', encoding=encoding) as file:
-            print('encoding 3: ', encoding)
             parser = reader(file)
             for row in parser:
                 dialect = Sniffer().sniff(str(row))
