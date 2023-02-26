@@ -12,7 +12,7 @@ class CSVParser:
         # concat the .csv extension so it is not necessary when instatiating
         self.source = f'{self.source}.csv'
 
-    def get_encoding(self):
+    def get_encoding(self) -> str:
         """
         Detect the encoding of the file
         """
@@ -53,7 +53,7 @@ class CSVParser:
         if not encoding:
             encoding = self.get_encoding()
         with open(self.source, 'r', encoding=encoding) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             row_count = -1
             for line in parser:
                 row_count += 1
@@ -67,7 +67,7 @@ class CSVParser:
         if not encoding:
             encoding = self.get_encoding()
         with open(self.source, 'r', encoding=encoding) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             for line in parser:
                 return line
 
@@ -78,25 +78,27 @@ class CSVParser:
         if not encoding:
             encoding = self.get_encoding()
         with open(self.source, 'r', encoding=encoding) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             row_container = []
             for line in parser:
                 row_container.append(line)
             return row_container
 
-    def slice(self) -> dict:
+    def slice(self, encoding:str='') -> dict:
         """
         Divide the file's rows exactly in half if possible.
         If the total number of rows is odd the first half will contain one extra row.
         """
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             # original csv.reader object is not iterable
             # saving it's elements to this iterable gives greater flexibility
             parser_iterable = []
             row_container1 = []
             row_container2 = []
-            half = int(self.get_row_count())/2
+            half = int(self.get_row_count(encoding=encoding))/2
             for line in parser:
                 parser_iterable.append(line)
                 # slice the parser_iterable after it's first item 
@@ -113,15 +115,17 @@ class CSVParser:
                 }
             return master_container
 
-    def divide(self, number_of_parts:int) -> list:
+    def divide(self, number_of_parts:int, encoding:str='') -> list:
         """
         Divide the file in the amount of parts indicated by the user.
         """
         if type(number_of_parts) == float:
             raise TypeError("number_of_parts must be of type integer")
-        with open(self.source, 'r', encoding=self.get_encoding()) as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
-            row_count = self.get_row_count()
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
+            row_count = self.get_row_count(encoding=encoding)
             if number_of_parts > row_count:
                 raise IndexError('number_of_parts is greater than row_count')
             parser_iterable = []
@@ -136,21 +140,25 @@ class CSVParser:
                     return [list]
             return sever(parser_iterable, number_of_parts)
 
-    def write_headers(self, headers_object:list[str]) -> None:
+    def write_headers(self, headers_object:list[str], encoding:str='') -> None:
         """
         Write the headers to a file.
         The file can be empty or have data
         """
-        rows = self.get_all_rows()
+        if not encoding:
+            encoding = self.get_encoding()
+        rows = self.get_all_rows(encoding=encoding)
         rows.insert(0, headers_object)
-        self.overwrite(rows)
+        self.overwrite(rows, encoding=encoding)
 
-    def overwrite(self, rows_object:list[list[str]]) -> None:
+    def overwrite(self, rows_object:list[list[str]], encoding:str='') -> None:
         """
         Write rows to a file (after truncating it)
         """
+        if not encoding:
+            encoding = self.get_encoding()
         with open(self.source, 'w', newline='') as file:
-            file_writer = writer(file, dialect=self.get_dialect())
+            file_writer = writer(file, dialect=self.get_dialect(encoding=encoding))
             file_writer.writerows(rows_object)
             file.close()
 
@@ -170,14 +178,16 @@ class CSVParser:
             else:
                 rows.append(i)
         # overwrite the resulting list into the file
-        self.overwrite(rows)
+        self.overwrite(rows, encoding=encoding)
 
-    def find_common_rows(self, second_file:'CSVParser') -> list[list[str]]:
+    def find_common_rows(self, second_file:'CSVParser', encoding:str='') -> list[list[str]]:
         """
         Find the rows that are on both files
         """
-        all_rows_1 = self.get_all_rows()
-        all_rows_2 = second_file.get_all_rows()
+        if not encoding:
+            encoding = self.get_encoding()
+        all_rows_1 = self.get_all_rows(encoding=encoding)
+        all_rows_2 = second_file.get_all_rows(encoding=encoding)
         common_items = []
         
         count = 0
@@ -189,13 +199,15 @@ class CSVParser:
                 print(f"found - {count}")
         return common_items
     
-    def find_different_rows(self, second_file:'CSVParser') -> list[list[str]]:
+    def find_different_rows(self, second_file:'CSVParser', encoding:str='') -> list[list[str]]:
         """
         Returns the rows that are on the first file
         but not on the second one
         """
-        common_rows = self.find_common_rows(second_file)
-        rows = self.get_all_rows()
+        if not encoding:
+            encoding = self.get_encoding()
+        common_rows = self.find_common_rows(second_file, encoding=encoding)
+        rows = self.get_all_rows(encoding=encoding)
 
         for item in common_rows:
             if item in rows:
@@ -203,11 +215,13 @@ class CSVParser:
                 rows.pop(index)
         return rows
     
-    def get_duplicates(self) -> dict:
+    def get_duplicates(self, encoding:str='') -> dict:
         """
         Find duplicate rows and the number of occurrences for each one
         """
-        rows = self.get_all_rows()
+        if not encoding:
+            encoding = self.get_encoding()
+        rows = self.get_all_rows(encoding=encoding)
 
         dups_dict = {}
 
@@ -223,12 +237,14 @@ class CSVParser:
         else:
             return {"Result": "No duplicate rows in the file"}
         
-    def cleanup(self) -> None:
+    def cleanup(self, encoding:str='') -> None:
         """
-        delete empty rows on the file
+        UNSTABLE: delete empty rows on the file
         """
-        with open(self.source, 'r') as file:
-            parser = reader(file, delimiter=self.get_dialect().delimiter)
+        if not encoding:
+            encoding = self.get_encoding()
+        with open(self.source, 'r', encoding=encoding) as file:
+            parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             parser_iterable = []
             for line in parser:
                 parser_iterable.append(line)
