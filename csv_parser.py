@@ -29,20 +29,23 @@ class CSVParser:
         with open(f'{str(name)}.csv', mode='x') as new_file:
             new_file.close()
 
-    def get_dialect(self, encoding:str='utf-8') -> Type[Dialect]:
+    def get_dialect(self, encoding:str='') -> Type[Dialect]:
         """
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
+        print('encoding 1: ', encoding)
         if not encoding:
             encoding = self.get_encoding()
+        print('encoding 2: ', encoding)
         with open(self.source, 'r', encoding=encoding) as file:
+            print('encoding 3: ', encoding)
             parser = reader(file)
             for row in parser:
                 dialect = Sniffer().sniff(str(row))
                 return dialect
 
-    def get_row_count(self, encoding:str='utf-8') -> int:
+    def get_row_count(self, encoding:str='') -> int:
         """
         Method to get the amount of rows that 
         the file contains, excluding the headers row.
@@ -57,7 +60,7 @@ class CSVParser:
             return row_count
 
 
-    def get_headers(self, encoding:str='utf-8') -> list[str]:
+    def get_headers(self, encoding:str='') -> list[str]:
         """
         Return the headers on a file.
         """
@@ -68,7 +71,7 @@ class CSVParser:
             for line in parser:
                 return line
 
-    def get_all_rows(self, encoding:str='utf-8') -> list:
+    def get_all_rows(self, encoding:str='') -> list:
         """
         Get the content of all the rows in the file.
         """
@@ -151,13 +154,15 @@ class CSVParser:
             file_writer.writerows(rows_object)
             file.close()
 
-    def append_rows(self, rows_object:list[list[str]], append_on_top:bool=False) -> None:
+    def append_rows(self, rows_object:list[list[str]], append_on_top:bool=False, encoding:str='') -> None:
         """
         Append rows at the end of a file 
         without deleting the existing rows
         """
+        if not encoding:
+            encoding = self.get_encoding()
         # read the existing and rows
-        rows = self.get_all_rows()
+        rows = self.get_all_rows(encoding=encoding)
         # append the new rows object to the existing ones
         for i in rows_object:
             if append_on_top:
