@@ -165,7 +165,7 @@ class CSVParser:
         """
         if not encoding:
             encoding = self.get_encoding()
-        with open(self.source, 'w', newline='') as file:
+        with open(self.source, 'w', newline='', encoding=encoding) as file:
             file_writer = writer(file, dialect=self.get_dialect(encoding=encoding))
             file_writer.writerows(rows_object)
             file.close()
@@ -196,16 +196,9 @@ class CSVParser:
             encoding = self.get_encoding()
         all_rows_1 = set(self.get_all_rows(encoding=encoding, row_structure='tuple'))
         all_rows_2 = set(second_file.get_all_rows(encoding=encoding, row_structure='tuple'))
-        common_items = list(all_rows_1.intersection(all_rows_2))
-        
-        # count = 0
-        
-        # for item in all_rows_1:
-        #     if item in all_rows_2[1:]:
-        #         count+=1
-        #         common_items.append(item)
-        #         print(f"found - {count}")
-        return common_items
+        common_rows = list(all_rows_1.intersection(all_rows_2))
+    
+        return common_rows
     
     def find_different_rows(self, second_file:'CSVParser', encoding:str='') -> list[list[str]]:
         """
@@ -214,14 +207,11 @@ class CSVParser:
         """
         if not encoding:
             encoding = self.get_encoding()
-        common_rows = self.find_common_rows(second_file, encoding=encoding)
-        rows = self.get_all_rows(encoding=encoding)
+        all_rows_1 = set(self.get_all_rows(encoding=encoding, row_structure='tuple'))
+        all_rows_2 = set(second_file.get_all_rows(encoding=encoding, row_structure='tuple'))
+        diff_rows = list(all_rows_1.difference(all_rows_2))
 
-        for item in common_rows:
-            if item in rows:
-                index = rows.index(item)
-                rows.pop(index)
-        return rows
+        return diff_rows
     
     def get_duplicates(self, encoding:str='') -> dict:
         """
