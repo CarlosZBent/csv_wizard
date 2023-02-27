@@ -70,7 +70,7 @@ class CSVParser:
             for line in parser:
                 return line
 
-    def get_all_rows(self, encoding:str='') -> list:
+    def get_all_rows(self, encoding:str='', row_structure='list') -> list:
         """
         Get the content of all the rows in the file.
         """
@@ -79,8 +79,17 @@ class CSVParser:
         with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file, delimiter=self.get_dialect(encoding=encoding).delimiter)
             row_container = []
-            for line in parser:
-                row_container.append(line)
+            if row_structure == 'set':
+                for line in parser:
+                    row_container.append(set(line))
+            elif row_structure == 'tuple':
+                for line in parser:
+                    row_container.append(tuple(line))
+            elif row_structure == 'dict':
+                return ["ERROR => Unsupported type: dict"]
+            else:
+                for line in parser:
+                    row_container.append(line)
             return row_container
 
     def slice(self, encoding:str='') -> dict:
@@ -185,17 +194,17 @@ class CSVParser:
         """
         if not encoding:
             encoding = self.get_encoding()
-        all_rows_1 = self.get_all_rows(encoding=encoding)
-        all_rows_2 = second_file.get_all_rows(encoding=encoding)
-        common_items = []
+        all_rows_1 = set(self.get_all_rows(encoding=encoding, row_structure='tuple'))
+        all_rows_2 = set(second_file.get_all_rows(encoding=encoding, row_structure='tuple'))
+        common_items = list(all_rows_1.intersection(all_rows_2))
         
-        count = 0
+        # count = 0
         
-        for item in all_rows_1:
-            if item in all_rows_2[1:]:
-                count+=1
-                common_items.append(item)
-                print(f"found - {count}")
+        # for item in all_rows_1:
+        #     if item in all_rows_2[1:]:
+        #         count+=1
+        #         common_items.append(item)
+        #         print(f"found - {count}")
         return common_items
     
     def find_different_rows(self, second_file:'CSVParser', encoding:str='') -> list[list[str]]:
