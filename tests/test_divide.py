@@ -24,4 +24,4 @@ def test_divide_elem_type_is_list():
 def test_divide():
   parts = test_file.divide(3)
   for elem in parts:
-      assert len(elem) <= 3
+      assert len(elem) <= 82

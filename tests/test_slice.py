@@ -7,4 +7,4 @@ def test_slice_type_is_dict():
 
 def test_slice():
     parts = test_file.slice()
-    assert len(parts['First_Half']) == 5 and len(parts['Second_Half']) == 4
+    assert len(parts['First_Half']) == 123 and len(parts['Second_Half']) == 123

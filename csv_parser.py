@@ -16,10 +16,14 @@ class CSVParser:
         """
         Detect the encoding of the file
         """
+    
         with open(self.source, 'rb') as file:
             line = file.readline()
             encoding = detect(line)['encoding']
-            return str(encoding)
+            if encoding == None:
+                raise LookupError( "Encoding=None | ¿Is the file empty?")
+            else:
+                return str(encoding)
 
     @staticmethod
     def __create(name:str) -> None:
