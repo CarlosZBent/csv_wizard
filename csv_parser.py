@@ -38,10 +38,9 @@ class CSVParser:
         Return the dialect from the file. The dialect contains properties 
         regarding the way the CSV file is structured.
         """
-        print('encoding 1: ', encoding)
+        print('encoding: ', encoding)
         if not encoding:
             encoding = self.get_encoding()
-        print('encoding 2: ', encoding)
         with open(self.source, 'r', encoding=encoding) as file:
             parser = reader(file)
             for row in parser:
@@ -115,14 +114,11 @@ class CSVParser:
                 parser_iterable.append(line)
                 # slice the parser_iterable after it's first item 
                 # to leave the header row out of the result
-            # file.close()
-            for item in parser_iterable[1:]:
-                row_container1.append(item)
-                if len(row_container1) > half:
-                    break
-                row_container2.append(item)
+            row_container1 = parser_iterable[1:int(half)]
+            row_container2 = parser_iterable[int(half):]
+            
             master_container = {
-                'First_Half': row_container1, 
+                'First_Half': row_container1,
                 'Second_Half':row_container2
                 }
             return master_container

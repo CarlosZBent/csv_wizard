@@ -12,4 +12,4 @@ def test_get_headers_elems_types_is_string():
 
 def test_get_headers():
     headers = test_file.get_headers()
-    assert headers == ["NAME","EMAIL"]
+    assert headers == ["NAME2","EMAIL2"]

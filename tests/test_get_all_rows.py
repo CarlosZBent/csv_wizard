@@ -18,4 +18,4 @@ def test_get_all_rows_element_type_child_is_string():
 
 def test_get_all_rows():
     all_rows = test_file.get_all_rows()
-    assert len(all_rows) == 246
+    assert len(all_rows) == 248

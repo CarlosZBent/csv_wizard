@@ -7,4 +7,4 @@ def test_get_encoding_returns_string():
 
 def test_get_encoding():
     enc = test_file.get_encoding()
-    assert enc == 'ascii'
+    assert enc == 'UTF-8-SIG'

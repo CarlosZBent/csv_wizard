@@ -1,7 +1,7 @@
 from ..csv_parser import CSVParser
 
-test_file = CSVParser('')
-test_file_no_dups = CSVParser('')
+test_file = CSVParser('everyone 248')
+test_file_no_dups = CSVParser('everyone 246')
 
 # test get_duplicates
 
@@ -25,4 +25,4 @@ def test_get_duplicates_on_file_without_duplicates():
 
 def test_get_duplicates():
     dups = test_file.get_duplicates()
-    assert dups == {}
+    assert dups == {"[' Alex Faust ', 'alex.faust@firstdue.com>']": 3}

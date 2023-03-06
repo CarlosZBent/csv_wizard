@@ -2,8 +2,8 @@ from pytest import raises
 from ..csv_parser import CSVParser
 
 empty_file = CSVParser('empty')
-test_file = CSVParser('everyone 246')
-test_file2 = CSVParser('everyone 248')
+test_file = CSVParser('everyone 248')
+test_file2 = CSVParser('everyone 246')
 
 # test empty file
 

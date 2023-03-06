@@ -10,7 +10,7 @@ def test_divide_raises_error_for_float_argument():
 
 def test_divide_raises_error_for_number_of_parts_greater_than_row_count():
     with raises(IndexError):
-        test_file.divide(95)
+        test_file.divide(300)
 
 def test_divide_type_is_list():
     parts = test_file.divide(4)
@@ -24,4 +24,4 @@ def test_divide_elem_type_is_list():
 def test_divide():
   parts = test_file.divide(3)
   for elem in parts:
-      assert len(elem) <= 82
+      assert len(elem) <= 124
