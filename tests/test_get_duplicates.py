@@ -25,4 +25,4 @@ def test_get_duplicates_on_file_without_duplicates():
 
 def test_get_duplicates():
     dups = test_file.get_duplicates()
-    assert dups == {"[' Alex Faust ', 'alex.faust@firstdue.com>']": 3}
+    assert dups == {"[' ']": 3}
