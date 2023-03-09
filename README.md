@@ -45,7 +45,15 @@ This method is used internally by other methods to be know how many rows a file 
 ***
 ### Getting the content of all rows in the CSV file. The `get_all_rows()` method.
 Returns a list containing the content of each individual row, including the header row. This is different from `get_row_count()` in that it returns the complete content of the rows, not only how many there are.
-> `new_file.get_all_rows()` # ``[['John', 'john@mail.com'], ['Anne', 'anne@mail.com]]``
+> `new_file.get_all_rows()` # `[['John', 'john@mail.com'], ['Anne', 'anne@mail.com]]`
+
+This method accepts an optional argument called `row_structure`. `get_all_rows()` will always return a list containin all the rows. But, by default, all the rows themselves will be inside lists. With the `row_structure` argument you can specify that the rows be enclosed in tuples or sets. Dicts won't work.
+
+> `get_all_rows(row_structure='tuple')` # `[('John', 'john@mail.com'), ('Anne', 'anne@mail.com)]`
+
+> `get_all_rows(row_structure='set')` # `[{'John', 'john@mail.com'}, {'Anne', 'anne@mail.com}]`
+
+> `get_all_rows(row_structure='dict')` # `['ERROR => Unsupported type: dict']`
 ***
 ### Slicing the CSV file in half. The `slice()` method.
 Returns a dictionary with two key-value pairs. The keys are called "First_Half" and "Second_Half", and they respectively contain each half of the file's rows.
@@ -79,28 +87,32 @@ After the rows are appended, they will be seen in reverse order on the file. The
 ***
 ### Getting the common rows between two instances of the CSVParser class. The `find_common_rows()` method.
 The `find_common_rows()` method compares the complete set of rows of two instances of the CSVParser class and returns a list containing the rows that are present on both instances. One CSVParser instance is the one the method is called on, the other one is passed as an argument.
+
+This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
 ```
 file1 = CSVParser('fileNo1')
 file2 = CSVParser('fileNo2')
 file1.find_common_rows(file2)
-> [["row1"], ["row2], ["row3]] 
-```
+> [(row1"), ("row2), ("row3)] 
+``` 
 
 ***
 ### Finding the different rows between two instances of the CSVParser class. The `find_different_rows()` method.
 The `find_different_rows()` method compares the complete set of rows of two instances of the CSVParser class and returns a list containing only the rows that are present on the firts file but not on the second. One CSVParser instance is the one the method is called on, the other one is passed as an argument.
+
+This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
 ```
 file1 = CSVParser('fileNo1')
 file2 = CSVParser('fileNo2')
 file1.find_different_rows(file2)
-> [["row5"], ["row8], ["row14]] 
+> [(row5"), ("row8), (row14)] 
 ```
 ```
 file1 = CSVParser('fileNo1')
 file2 = CSVParser('fileNo2')
 file2.find_different_rows(file1)
-> [["row1"], ["row4], ["row34]] 
-```
+> [(row1"), ("row4), (row34)] 
+``` 
 
 ***
 ### Finding duplicate rows in a file. The `get_duplicates()` method.
@@ -113,3 +125,7 @@ file1.get_duplicates()
 ***
 ### **UNSTABLE**. In case there's empty rows in the file. The `cleanup()` method.
 Executing this method on a `CSVParser` instance will delete all blank rows from a CSV file.
+***
+# Usage warnings
+1. When finding common rows or different rows between very large CSV files, keep in mind that execution time can be slower. To provide a frame of reference, while testing, comparing two files of a bit over 91000 rows, took between 1.7 and 2.1 seconds.
+2. When comparing files, if they contain special characters like spanish tildes (eg. á, í), if the files' encoding differs, and on of them recognizes this characters but the other one doesn't, they will be read as different characters, thus being recognized as different rows.
