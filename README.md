@@ -123,8 +123,8 @@ file1.get_duplicates()
 > {"[' Alex ', 'alex@mail.com']": 2, "[' Adriana ', 'adriana@mail.com']": 5}
 ```
 ***
-### **UNSTABLE**. In case there's empty rows in the file. The `cleanup()` method.
-Executing this method on a `CSVParser` instance will delete all blank rows from a CSV file.
+### In case there's empty rows in the file. The `delete_blanks()` method.
+Executing this method on a `CSVParser` instance will delete all blank rows from the CSV file. If there are many empty rows, the method may fail to delete them all in one run. If this happens, running it again should eventually delete them all.
 ***
 # Usage warnings
 1. When finding common rows or different rows between very large CSV files, keep in mind that execution time can be slower. To provide a frame of reference, while testing, comparing two files of a bit over 91000 rows, took between 1.7 and 2.1 seconds.
