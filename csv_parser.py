@@ -235,9 +235,9 @@ class CSVParser:
         else:
             return {"Result": "No duplicate rows in the file"}
         
-    def cleanup(self, encoding:str='') -> None:
+    def delete_blanks(self, encoding:str='') -> None:
         """
-        UNSTABLE: delete empty rows on the file
+        delete blank rows from file
         """
         if not encoding:
             encoding = self.get_encoding()
@@ -248,7 +248,8 @@ class CSVParser:
                 parser_iterable.append(line)
             for row in parser_iterable: 
                 try:
-                    while len(row) == 0:
+                    while all('' == i or i.isspace() for i in row):
+                        # while a row has no characters or all its characters are whitespaces
                         index = parser_iterable.index(row)
                         parser_iterable.pop(index)
                 except ValueError:
