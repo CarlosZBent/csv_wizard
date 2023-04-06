@@ -128,4 +128,5 @@ Executing this method on a `CSVParser` instance will delete all blank rows from 
 ***
 # Usage warnings
 1. When finding common rows or different rows between very large CSV files, keep in mind that execution time can be slower. To provide a frame of reference, while testing, comparing two files of a bit over 91000 rows, took between 1.7 and 2.1 seconds.
-2. When comparing files, if they contain special characters like spanish tildes (eg. á, í), if the files' encoding differs, and on of them recognizes this characters but the other one doesn't, they will be read as different characters, thus being recognized as different rows.
+2. When comparing files, if they contain special characters like spanish *tildes* (eg. á, í), if the files' encoding differs, and on of them recognizes this characters but the other one doesn't, they will be read as different characters, thus being recognized as different rows.
+3. When writing to an empty file (created manually or with the `create` method), an encoding must be specified.
