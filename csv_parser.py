@@ -26,7 +26,7 @@ class CSVParser:
                 return str(encoding)
 
     @staticmethod
-    def __create(name:str) -> None:
+    def create(name:str) -> None:
         """
         Create a new CSV file
         """
