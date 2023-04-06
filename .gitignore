@@ -11,3 +11,5 @@ setup.py
 
 .pdm.toml
 /.venv
+
+ProductUsers management.py

@@ -2,6 +2,7 @@ from typing import Type
 from csv import reader, writer, Sniffer, Dialect
 from chardet import detect
 from dataclasses import dataclass
+import os
 
 
 @dataclass
@@ -26,11 +27,11 @@ class CSVParser:
                 return str(encoding)
 
     @staticmethod
-    def create(name:str) -> None:
+    def create(name:str, path:str=os.path.realpath('.')) -> None:
         """
-        Create a new CSV file
+        Create a new CSV file. Optionally provide a path for the new file.
         """
-        with open(f'{str(name)}.csv', mode='x') as new_file:
+        with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
             new_file.close()
 
     def get_dialect(self, encoding:str='') -> Type[Dialect]:
