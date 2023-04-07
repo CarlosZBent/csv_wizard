@@ -5,6 +5,10 @@ from dataclasses import dataclass
 import os
 
 
+CURRENT_DIR = os.path.realpath('.')
+CURRENT_PARENT_DIR = os.path.realpath('..')
+ABSOLUTE_PATH = os.path.abspath('.')
+
 @dataclass
 class CSVParser:
     source:str

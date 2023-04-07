@@ -29,8 +29,21 @@ The dialect property contains:
 
 > `new_file.get_dialect().quoting`
 ***
-### The `__create()` **private method**. And an easier way to create a file.
-The create method receives a string as only argument and it creates a new CSV file using that string.
+### The `create()`. An easier way to create a file, optionally specify a path.
+The create method receives a string as required argument and it creates a new CSV file using that string. 
+
+**Specifing a path to create the folder in**
+
+Optionally, this method receives a *path* argument to specify a folder to create the file in. If this is not specified, the file will be created in the current directory.
+
+For security reasons, when using this method in a client-facing app feature, it is recommended to limit the access to parent folders, to avoid the creation of files in vulnerable locations.
+
+**Predefined paths**
+
+There are three predefined global variables you can use: 
+* `CURRENT_DIR` to get the current directory
+* `CURRENT_PARENT_DIR` to get the parent directory of the current location
+* `ABSOLUTE_PATH` to get the current absolute path
 
 However, is the `CSVParser` class is instantiated using the name of a file that doesn't exist, it will create it and treat it as any other class instance.
 ***
