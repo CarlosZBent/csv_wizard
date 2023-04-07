@@ -45,7 +45,7 @@ There are three predefined global variables you can use:
 * `CURRENT_PARENT_DIR` to get the parent directory of the current location
 * `ABSOLUTE_PATH` to get the current absolute path
 
-However, is the `CSVParser` class is instantiated using the name of a file that doesn't exist, it will create it and treat it as any other class instance.
+> `CSVParser.create(name="new-file", path=CURRENT_PARENT_DIR)`
 ***
 ### Getting the headers row. The `get_headers()` method.
 Returns only the first line on the CSV file, which is presumed to be the one containing the headers.

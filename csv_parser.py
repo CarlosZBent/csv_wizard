@@ -35,8 +35,19 @@ class CSVParser:
         """
         Create a new CSV file. Optionally provide a path for the new file.
         """
-        with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
-            new_file.close()
+        path_exists = path in CURRENT_DIR
+        if path_exists:
+            with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
+                new_file.close()
+            print(f"File <{name}.csv> created at <{path}>")
+        else:
+            print('Specified folder does not exist')
+            print('Creating folder...')
+            os.makedirs(path)
+            print(f"Folder created at <{path}>")
+            with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
+                new_file.close()
+            print(f"File <{name}.csv> created at <{path}>")
 
     def get_dialect(self, encoding:str='') -> Type[Dialect]:
         """
