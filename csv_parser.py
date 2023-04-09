@@ -12,10 +12,14 @@ ABSOLUTE_PATH = os.path.abspath('.')
 @dataclass
 class CSVParser:
     source:str
+    path:str = None
 
     def __post_init__(self) -> None:
         # concat the .csv extension so it is not necessary when instatiating
-        self.source = f'{self.source}.csv'
+        if self.path:
+            self.source = f"{os.path.join(self.path, self.source)}.csv"
+        else:
+            self.source = f"{self.source}.csv"
 
     def get_encoding(self) -> str:
         """
@@ -26,7 +30,7 @@ class CSVParser:
             line = file.readline()
             encoding = detect(line)['encoding']
             if encoding == None:
-                raise LookupError( "Encoding=None | ¿Is the file empty?")
+                raise LookupError("Encoding=None | Is the file empty?")
             else:
                 return str(encoding)
 
@@ -35,19 +39,28 @@ class CSVParser:
         """
         Create a new CSV file. Optionally provide a path for the new file.
         """
-        path_exists = path in CURRENT_DIR
-        if path_exists:
+        # path_exists = path in CURRENT_DIR or path in CURRENT_PARENT_DIR
+        try:
             with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
                 new_file.close()
-            print(f"File <{name}.csv> created at <{path}>")
-        else:
+            print("")
+            print("-------------")
+            print(f">>>> File <{name}.csv> created at <{path}>")
+            print("-------------")
+            print("")
+        except FileNotFoundError:
+            print("")
+            print("-------------")
             print('Specified folder does not exist')
             print('Creating folder...')
+            print("")
             os.makedirs(path)
-            print(f"Folder created at <{path}>")
+            print(f">> Folder created")
             with open(os.path.join(f'{path}', f'{str(name)}.csv'), mode='x') as new_file:
                 new_file.close()
-            print(f"File <{name}.csv> created at <{path}>")
+            print(f">>>> File <{name}.csv> created at <{path}>")
+            print("-------------")
+            print("")
 
     def get_dialect(self, encoding:str='') -> Type[Dialect]:
         """
