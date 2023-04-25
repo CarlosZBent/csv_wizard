@@ -4,14 +4,17 @@ from .test_misc import test_file, test_file2
 
 # test find_different_rows()
 
+
 def test_find_different_rows_returns_list():
-    common = test_file.find_different_rows(test_file2, 'utf-8')
+    common = test_file.find_different_rows(test_file2, "utf-8")
     assert type(common) == list
 
+
 def test_find_different_rows():
-    common = test_file2.find_different_rows(test_file, 'utf-8')
+    common = test_file2.find_different_rows(test_file, "utf-8")
     assert common == []
+
 
 def test_find_different_rows_incorrect_argument_type():
     with raises(AttributeError):
-        test_file.find_different_rows(['dummy list'], 'utf-8')
+        test_file.find_different_rows(["dummy list"], "utf-8")
