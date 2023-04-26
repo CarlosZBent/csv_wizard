@@ -8,14 +8,16 @@ dev = [
 
 [project]
 name = "csv_parser"
-version = "0.2.0"
+version = "0.4.0"
 description = "Handy extension to Python csv standard library package"
 authors = [
     {name = "carloszbent", email = "bentsoft365@gmail.com"},
 ]
 dependencies = [
     "chardet>=5.1.0",
-    ]
+    "build>=0.10.0",
+    "twine>=4.0.2",
+]
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}

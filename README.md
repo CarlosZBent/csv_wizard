@@ -1,7 +1,7 @@
 # CSV Divider
-👷‍♀️ **Alpha stage software! WIP** 🚧
 
-**Any suggestion or request is appreciated** 🙂
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+
 ***
 ## Import a CSV file by only giving the `CSVParser` class a `string` containing the full name of the file without the *.csv* part.
 > `new_file = CSVParser("my_file")`
