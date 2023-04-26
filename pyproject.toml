@@ -7,11 +7,11 @@ dev = [
 ]
 
 [project]
-name = "csv_parser"
-version = "0.4.0"
+name = "csv_wizard"
+version = "0.4.1"
 description = "Handy extension to Python csv standard library package"
 authors = [
-    {name = "carloszbent", email = "bentsoft365@gmail.com"},
+    {name = "liquidsnake", email = "bentsoft365@gmail.com"},
 ]
 dependencies = [
     "chardet>=5.1.0",
