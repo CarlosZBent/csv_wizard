@@ -11,7 +11,7 @@ ABSOLUTE_PATH = os.path.abspath(".")
 
 
 @dataclass
-class CSVParser:
+class CSVWizard:
     source: str
     path: str = None
 
@@ -235,7 +235,7 @@ class CSVParser:
         self.overwrite(rows, encoding=encoding)
 
     def find_common_rows(
-        self, second_file: "CSVParser", encoding: str = ""
+        self, second_file: "CSVWizard", encoding: str = ""
     ) -> list[list[str]]:
         """
         Find the rows that are on both files
@@ -251,7 +251,7 @@ class CSVParser:
         return common_rows
 
     def find_different_rows(
-        self, second_file: "CSVParser", encoding: str = ""
+        self, second_file: "CSVWizard", encoding: str = ""
     ) -> list[list[str]]:
         """
         Returns the rows that are on the first file

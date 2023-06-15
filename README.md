@@ -1,21 +1,21 @@
-# CSV Divider
+# csv wizard
 
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 
 ***
-## Import a CSV file by only giving the `CSVParser` class a `string` containing the full name of the file without the *.csv* part.
-> `new_file = CSVParser("my_file")`
+## Import a CSV file by only giving the `CSVWizard` class a `string` containing the full name of the file without the *.csv* extension.
+> `new_file = CSVWizard("my_file")`
 ***
 ## Handling decoding/encoding on a file.
 All methods have an optional `encoding` argument.
-If left empty, csv_parser will attempt to automatically figure out the encoding, however, if a `UnicodeDecodeError` or `UnicodeEncodeError` error are raised, the encoding should be specified manually. 
+If left empty, csv_wizard will attempt to automatically figure out the encoding, however, if a `UnicodeDecodeError` or `UnicodeEncodeError` error are raised, the encoding should be specified manually. 
 The encoding parameter accepts strings.
 ```
 > file1.get_row_count(encoding='utf-8') 
 ```
 ***
 ### Getting the characters that define the CSV file's layout. The `get_dialect` method.
-Calling this method on a CSVParser object returns it's dialect property.
+Calling this method on a CSVWizard object returns it's dialect property.
 The dialect property contains:
 * lineterminator
 * quoting
@@ -29,7 +29,7 @@ The dialect property contains:
 
 > `new_file.get_dialect().quoting`
 ***
-### The `create()`. An easier way to create a file, optionally specify a path.
+### The `create()` method. An easier way to create a file, optionally specify a path.
 The create method receives a string as required argument and it creates a new CSV file using that string. 
 
 **Specifing a path to create the folder in**
@@ -45,7 +45,7 @@ There are three predefined global variables you can use:
 * `CURRENT_PARENT_DIR` to get the parent directory of the current location
 * `ABSOLUTE_PATH` to get the current absolute path
 
-> `CSVParser.create(name="new-file", path=CURRENT_PARENT_DIR)`
+> `CSVWizard.create(name="new-file", path=CURRENT_PARENT_DIR)`
 ***
 ### Getting the headers row. The `get_headers()` method.
 Returns only the first line on the CSV file, which is presumed to be the one containing the headers.
@@ -98,46 +98,46 @@ If set to `True`, the `append_on_top` argument makes the method place the new ro
 
 After the rows are appended, they will be seen in reverse order on the file. The last element on the `rows_object` will be on top at the file.
 ***
-### Getting the common rows between two instances of the CSVParser class. The `find_common_rows()` method.
-The `find_common_rows()` method compares the complete set of rows of two instances of the CSVParser class and returns a list containing the rows that are present on both instances. One CSVParser instance is the one the method is called on, the other one is passed as an argument.
+### Getting the common rows between two instances of the CSVWizard class. The `find_common_rows()` method.
+The `find_common_rows()` method compares the complete set of rows of two instances of the CSVWizard class and returns a list containing the rows that are present on both instances. One CSVWizard instance is the one the method is called on, the other one is passed as an argument.
 
 This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
 ```
-file1 = CSVParser('fileNo1')
-file2 = CSVParser('fileNo2')
+file1 = CSVWizard('fileNo1')
+file2 = CSVWizard('fileNo2')
 file1.find_common_rows(file2)
 > [(row1"), ("row2), ("row3)] 
 ``` 
 
 ***
-### Finding the different rows between two instances of the CSVParser class. The `find_different_rows()` method.
-The `find_different_rows()` method compares the complete set of rows of two instances of the CSVParser class and returns a list containing only the rows that are present on the firts file but not on the second. One CSVParser instance is the one the method is called on, the other one is passed as an argument.
+### Finding the different rows between two instances of the CSVWizard class. The `find_different_rows()` method.
+The `find_different_rows()` method compares the complete set of rows of two instances of the CSVWizard class and returns a list containing only the rows that are present on the firts file but not on the second. One CSVWizard instance is the one the method is called on, the other one is passed as an argument.
 
 This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
 ```
-file1 = CSVParser('fileNo1')
-file2 = CSVParser('fileNo2')
+file1 = CSVWizard('fileNo1')
+file2 = CSVWizard('fileNo2')
 file1.find_different_rows(file2)
 > [(row5"), ("row8), (row14)] 
 ```
 ```
-file1 = CSVParser('fileNo1')
-file2 = CSVParser('fileNo2')
+file1 = CSVWizard('fileNo1')
+file2 = CSVWizard('fileNo2')
 file2.find_different_rows(file1)
 > [(row1"), ("row4), (row34)] 
 ``` 
 
 ***
 ### Finding duplicate rows in a file. The `get_duplicates()` method.
-When called on an instance of the CSVParser class, this method will return a dictionary with the following format: `{'row_name': number_of occurrences}`
+When called on an instance of the CSVWizard class, this method will return a dictionary with the following format: `{'row_name': number_of occurrences}`
 ```
-file1 = CSVParser('fileNo1')
+file1 = CSVWizard('fileNo1')
 file1.get_duplicates()
 > {"[' Alex ', 'alex@mail.com']": 2, "[' Adriana ', 'adriana@mail.com']": 5}
 ```
 ***
 ### In case there's empty rows in the file. The `delete_blanks()` method.
-Executing this method on a `CSVParser` instance will delete all blank rows from the CSV file. If there are many empty rows, the method may fail to delete them all in one run. If this happens, running it again should eventually delete them all.
+Executing this method on a `CSVWizard` instance will delete all blank rows from the CSV file. If there are many empty rows, the method may fail to delete them all in one run. If this happens, running it again should eventually delete them all.
 ***
 # Usage warnings
 1. When finding common rows or different rows between very large CSV files, keep in mind that execution time can be slower. To provide a frame of reference, while testing, comparing two files of a bit over 91000 rows, took between 1.7 and 2.1 seconds.
