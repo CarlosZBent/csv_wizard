@@ -1,7 +1,5 @@
 from pytest import raises
 
-from ..csv_parser import CSVParser
-
 empty_file = CSVParser("empty")
 test_file = CSVParser("small0")
 test_file2 = CSVParser("small1")
