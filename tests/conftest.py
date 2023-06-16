@@ -1,5 +1,12 @@
 import pytest
+import shutil
 from src.csv_wizard import CSVWizard
+
+
+# the last methods that will run as part of this tests,
+# will overwrite the test_file. So we first make a copy from a backup file,
+shutil.copyfile("tests/test_file_backup.csv", "tests/test_file.csv")
+
 
 @pytest.fixture
 def test_file():
