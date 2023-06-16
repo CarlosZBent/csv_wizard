@@ -1,20 +1,19 @@
-from pytest import raises
+import pytest
 
-from .test_misc import test_file, test_file2
 
 # test find_different_rows()
 
-
-def test_find_different_rows_returns_list():
-    common = test_file.find_different_rows(test_file2, "utf-8")
-    assert type(common) == list
-
-
-def test_find_different_rows():
-    common = test_file2.find_different_rows(test_file, "utf-8")
-    assert common == []
+def test_find_different_rows_returns_list(test_file, test_file_diff):
+    diff = test_file.find_different_rows(test_file_diff)
+    assert type(diff) == list
 
 
-def test_find_different_rows_incorrect_argument_type():
-    with raises(AttributeError):
-        test_file.find_different_rows(["dummy list"], "utf-8")
+def test_find_different_rows(test_file, test_file_diff):
+    diff = test_file_diff.find_different_rows(test_file)
+    # diff results don't have an established order
+    assert diff == [('Samira', 'samira@protonmail.com'), ('Manuel', 'manuel@hotmail.com')] or diff == [('Manuel', 'manuel@hotmail.com'), ('Samira', 'samira@protonmail.com')]
+
+
+def test_find_different_rows_incorrect_argument_type(test_file):
+    with pytest.raises(AttributeError):
+        test_file.find_different_rows(["dummy list"])
