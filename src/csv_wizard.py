@@ -279,7 +279,7 @@ class CSVWizard:
 
         for i in rows:
             # iterate over the file's rows
-            if rows.count(i) > 1:
+            if rows.count(i) > 1 and i != []:
                 # if the count for this element is > 1 is duplicated
                 # add that element and it's count to the dict
                 dups_dict.update({str(i): rows.count(i)})
