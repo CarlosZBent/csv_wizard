@@ -12,8 +12,13 @@ ABSOLUTE_PATH = os.path.abspath(".")
 
 @dataclass
 class CSVWizard:
+    __slots__ = (
+        "source", 
+        "path"
+    )
+
     source: str
-    path: str = None
+    path: str
 
     def __post_init__(self) -> None:
         # concat the .csv extension so it is not necessary when instatiating
