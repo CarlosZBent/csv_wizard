@@ -113,7 +113,7 @@ file1.find_common_rows(file2)
 ### Finding the different rows between two instances of the CSVWizard class. The `find_different_rows()` method.
 The `find_different_rows()` method compares the complete set of rows of two instances of the CSVWizard class and returns a list containing only the rows that are present on the firts file but not on the second. One CSVWizard instance is the one the method is called on, the other one is passed as an argument.
 
-This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
+This method internally calls the `get_all_rows()` method, and it specifically asks for a `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
 ```
 file1 = CSVWizard('fileNo1')
 file2 = CSVWizard('fileNo2')
