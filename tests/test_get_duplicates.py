@@ -1,7 +1,7 @@
 import pytest
 
-
 # test get_duplicates
+
 
 def test_get_duplicates_returns_dict(test_file_with_dups):
     dups = test_file_with_dups.get_duplicates()
@@ -27,4 +27,7 @@ def test_get_duplicates_on_file_without_duplicates(test_file):
 
 def test_get_duplicates(test_file_with_dups):
     dups = test_file_with_dups.get_duplicates()
-    assert dups == {"['Bastian', 'bastian@yahoo.com']": 3, "['Eva', 'eva@gmail.com']": 2}
+    assert dups == {
+        "['Bastian', 'bastian@yahoo.com']": 3,
+        "['Eva', 'eva@gmail.com']": 2,
+    }

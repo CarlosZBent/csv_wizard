@@ -1,7 +1,7 @@
 import pytest
 
-
 # test get_all_rows()
+
 
 def test_get_all_rows_type_is_list(test_file):
     result = test_file.get_all_rows()

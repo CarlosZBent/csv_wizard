@@ -1,7 +1,7 @@
 import pytest
 
-
 # dialect tests
+
 
 def test_get_dialect_type_is_object(test_file):
     dialect = test_file.get_dialect()

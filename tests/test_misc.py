@@ -1,7 +1,7 @@
 import pytest
 
-
 # test empty file
+
 
 def test_opening_empty_file_returns_attributeerror(test_file_empty):
     with pytest.raises(LookupError):
@@ -9,6 +9,7 @@ def test_opening_empty_file_returns_attributeerror(test_file_empty):
 
 
 # test delete_blanks
+
 
 def test_delete_blanks(test_file):
     parser_iterable = []
@@ -19,8 +20,9 @@ def test_delete_blanks(test_file):
     for row in parser_iterable:
         assert all("" != i and not i.isspace() for i in row)
 
-        
+
 # test_write_headers()
+
 
 def test_write_headers(test_file):
     new_headers = ["NAMENEW", "EMAILNEW"]
@@ -30,6 +32,7 @@ def test_write_headers(test_file):
 
 # test overwrite
 
+
 def test_overwrite(test_file):
     new_body = [["column1", "column1"], ["column2", "column2"]]
     test_file.overwrite(new_body)
@@ -37,6 +40,7 @@ def test_overwrite(test_file):
 
 
 # test append
+
 
 def test_append_rows(test_file):
     rows = [["column1", "column1"], ["column2", "column2"]]
@@ -51,5 +55,3 @@ def test_append_rows_at_top_of_file(test_file):
         ["column2", "column2"],
         ["column1", "column1"],
     ]
-
-
