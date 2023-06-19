@@ -3,8 +3,8 @@
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 
 ***
-## Import a CSV file by only giving the `CSVWizard` class a `string` containing the full name of the file without the *.csv* extension.
-> `new_file = CSVWizard("my_file")`
+## Import a CSV file by only giving the `CSVWizard` class a `string` containing the full name of the file without the *.csv* extension, and the path of the file (if it is in current folder just use `"."`).
+> `new_file = CSVWizard("my_file", ".")`
 ***
 ## Handling decoding/encoding on a file.
 All methods have an optional `encoding` argument.
