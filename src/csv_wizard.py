@@ -314,4 +314,4 @@ class CSVWizard:
                         index = parser_iterable.index(row)
                         parser_iterable.pop(index)
                 except ValueError:
-                    self.overwrite(parser_iterable)
+                    return parser_iterable
