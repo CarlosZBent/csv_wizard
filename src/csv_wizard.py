@@ -178,7 +178,7 @@ class CSVWizard:
                 file, delimiter=self.get_dialect(encoding=encoding).delimiter
             )
             row_count = self.get_row_count(encoding=encoding)
-            if number_of_parts > row_count:
+            if int(number_of_parts) > row_count:
                 raise IndexError("number_of_parts is greater than row_count")
             parser_iterable = []
             for line in parser:
@@ -186,9 +186,9 @@ class CSVWizard:
             parser_iterable.pop(0)
 
             def sever(list, n) -> list:
-                p = len(list) // n
+                p = len(list) // int(n)
                 if len(list) - p > 0:
-                    return [list[:p]] + sever(list[p:], n - 1)
+                    return [list[:p]] + sever(list[p:], int(n) - 1)
                 else:
                     return [list]
 
