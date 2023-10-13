@@ -102,6 +102,8 @@ After the rows are appended, they will be seen in reverse order on the file. The
 The `find_common_rows()` method compares the complete set of rows of two instances of the CSVWizard class and returns a list containing the rows that are present on both instances. One CSVWizard instance is the one the method is called on, the other one is passed as an argument.
 
 This method internally calls the `get_all_rows()` method, and it specifically asks fora `row_structure` of tuples. This is done for performance reasons. So the rows will be returned in the format `[('col1', 'col2')]`.
+
+This method will not detect the headers row as a common row, so that must be added to the resulting dataset using `write_headers()`.
 ```
 file1 = CSVWizard('fileNo1')
 file2 = CSVWizard('fileNo2')
