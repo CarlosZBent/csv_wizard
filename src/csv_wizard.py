@@ -253,7 +253,7 @@ class CSVWizard:
         )
         common_rows = list(all_rows_1.intersection(all_rows_2))
 
-        return common_rows
+        return common_rows[1:]
 
     def find_different_rows(
         self, second_file: "CSVWizard", encoding: str = ""
