@@ -10,7 +10,7 @@ dev = [
 
 [project]
 name = "csv_wizard"
-version = "1.0.1"
+version = "1.0.2"
 description = "Handy extension to Python csv standard library package"
 authors = [
     {name = "liquidsnake", email = "bentsoft365@gmail.com"},
