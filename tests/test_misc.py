@@ -12,12 +12,8 @@ def test_opening_empty_file_returns_attributeerror(test_file_empty):
 
 
 def test_delete_blanks(test_file):
-    parser_iterable = []
-    e = test_file.delete_blanks()
-    rows = test_file.get_all_rows()
-    for line in rows:
-        parser_iterable.append(line)
-    for row in parser_iterable:
+    clean_rows = test_file.delete_blanks()
+    for row in clean_rows:
         assert all("" != i and not i.isspace() for i in row)
 
 
