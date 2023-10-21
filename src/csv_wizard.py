@@ -300,18 +300,12 @@ class CSVWizard:
         """
         if not encoding:
             encoding = self.get_encoding()
-        with open(self.source, "r", encoding=encoding) as file:
-            parser = reader(
-                file, delimiter=self.get_dialect(encoding=encoding).delimiter
-            )
-            parser_iterable = []
-            for line in parser:
-                parser_iterable.append(line)
-            for row in parser_iterable:
-                try:
-                    while all("" == i or i.isspace() for i in row):
-                        # while a row has no characters or all its characters are whitespaces
-                        index = parser_iterable.index(row)
-                        parser_iterable.pop(index)
-                except ValueError:
-                    return parser_iterable
+        rows = self.get_all_rows(encoding=encoding)
+        for row in rows:
+            try:
+                while all("" == i or i.isspace() for i in row):
+                    # while a row has no characters or all its characters are whitespaces
+                    index = rows.index(row)
+                    rows.pop(index)
+            except ValueError:
+                return rows

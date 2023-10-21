@@ -15,18 +15,18 @@ def contains(self, rows_object, column, value):
 
 """
 
-class ColumnFilter:
-    def __init__(rows_object, column, value):
-        rows_object = self.rows_object
-        column = self.column
-        value = self.value
+# class ColumnFilter:
+#     def __init__(self, rows_object, column, value):
+#         self.rows_object = rows_object
+#         self.column = column
+#         self.value = value
 
 
-    def contains(self, rows_object, column, value):
-        matching_rows = []
-        for row in rows_object:
-            if value in row[column]:
-                row_index = rows_object.index(row)
-                matching_rows.append(row_index)
+#     def contains(self):
+#         matching_rows = []
+#         for row in self.rows_object:
+#             if self.value in row[self.column]:
+#                 row_index = self.rows_object.index(row)
+#                 matching_rows.append(row_index)
 
-        return matching_rows
+#         return matching_rows
