@@ -5,6 +5,8 @@ from typing import Type
 
 from chardet import detect
 
+from .__RowFilter import RowFilter
+
 CURRENT_DIR = os.path.realpath(".")
 CURRENT_PARENT_DIR = os.path.realpath("..")
 ABSOLUTE_PATH = os.path.abspath(".")
@@ -313,8 +315,9 @@ class CSVWizard:
 
     def add_column(
         self, 
-        new_col_name: str,
-        non_conditional_value: int or str = None,
+        new_col_name: str = "NEW_COLUMN",
+        new_col_value: int or str = None,
+        new_else_value: int or str = None,
         condition_col: int = None, 
         condition_operator: str = None, 
         condition_value: int or str = None,
@@ -323,20 +326,56 @@ class CSVWizard:
         """
         add a new column to the file.
         values can be the same for all rows in the new column,
-        or they can be depending on a condition.
+        or they can be added depending on a condition.
         """
         if not encoding:
             encoding = self.get_encoding()
         rows = self.get_all_rows(encoding=encoding)
+        
+        # If the condition_col is the first, its true number is 0
+        # but that evaluates to None, so this method inteprets that 
+        # condition_col wasn't provided and raises a ValueError.
+        # Therefore, condition_col must be provided as an argument starting 
+        # to count from 1, not 0. The first column of the file is condition_col=1.
+        # Then it is substracted for the method to continue
+        
         if condition_col and condition_operator and condition_value:
+            condition_col = condition_col - 1
             # condition set
-            pass
+            filter = RowFilter(rows, condition_col)
+            rows[0].append(new_col_name) # append new column name to headers
+            
+            if condition_operator == "contains":
+                result_rows_indexes = filter.contains(condition_value)
+            elif condition_operator == "not_contains":
+                result_rows_indexes = filter.not_contains(condition_value)
+            elif condition_operator == "is_equal_length":
+                result_rows_indexes = filter.is_equal_length(condition_value)
+            elif condition_operator == "equals":
+                result_rows_indexes = filter.equals(condition_value)
+            elif condition_operator == "not_equals":
+                result_rows_indexes = filter.not_equals(condition_value)
+            elif condition_operator == "is_larger":
+                result_rows_indexes = filter.is_larger(condition_value)
+            elif condition_operator == "is_smaller":
+                result_rows_indexes = filter.is_smaller(condition_value)
+            else:
+                raise ValueError("operator not supported")
+
+            for row in rows[1:]:
+                if rows.index(row) in result_rows_indexes:
+                    row.append(new_col_value)
+                else:
+                    if len(row) > 0:
+                        row.append(new_else_value)
+            
+            return rows
         elif not condition_col and not condition_operator and not condition_value:
             # no condition set
             rows[0].append(new_col_name) # append new column name to headers
             for row in rows[1:]:
                 if len(row) > 0: # dont touch empty rows
-                    row.append(str(non_conditional_value))
+                    row.append(str(new_col_value))
             return rows
         else:
             # condition incomplete
