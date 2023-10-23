@@ -294,7 +294,7 @@ class CSVWizard:
         else:
             return {"Result": "No duplicate rows in the file"}
 
-    def delete_blanks(self, encoding: str = "") -> None:
+    def delete_blanks(self, encoding: str = "") -> list:
         """
         delete blank rows from file
         """
@@ -309,3 +309,37 @@ class CSVWizard:
                     rows.pop(index)
             except ValueError:
                 return rows
+
+
+    def add_column(
+        self, 
+        new_col_name: str,
+        non_conditional_value: int or str = None,
+        condition_col: int = None, 
+        condition_operator: str = None, 
+        condition_value: int or str = None,
+        encoding: str = ""
+    ) -> list:
+        """
+        add a new column to the file.
+        values can be the same for all rows in the new column,
+        or they can be depending on a condition.
+        """
+        if not encoding:
+            encoding = self.get_encoding()
+        rows = self.get_all_rows(encoding=encoding)
+        if condition_col and condition_operator and condition_value:
+            # condition set
+            pass
+        elif not condition_col and not condition_operator and not condition_value:
+            # no condition set
+            rows[0].append(new_col_name) # append new column name to headers
+            for row in rows[1:]:
+                if len(row) > 0: # dont touch empty rows
+                    row.append(str(non_conditional_value))
+            return rows
+        else:
+            # condition incomplete
+            raise ValueError(
+            "`condition_col`, `condition_operator` and `condition_value` must ALL be specified for the condition to be applied."
+            )
