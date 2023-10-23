@@ -139,7 +139,9 @@ file1.get_duplicates()
 ```
 ***
 ### In case there's empty rows in the file. The `delete_blanks()` method.
-Executing this method on a `CSVWizard` instance will delete all blank rows from the CSV file. If there are many empty rows, the method may fail to delete them all in one run. If this happens, running it again should eventually delete them all.
+Executing this method on a `CSVWizard` instance will return a rows object with all blank rows removed. If there are many empty rows, the method may fail to delete them all in one run. If this happens, running it again should eventually delete them all.
+
+It can be used as an alternative to `get_all_rows()` because it returns the entire set of rows but already cleaned.
 ***
 # Usage warnings
 1. When finding common rows or different rows between very large CSV files, keep in mind that execution time can be slower. To provide a frame of reference, while testing, comparing two files of a bit over 91000 rows, took between 1.7 and 2.1 seconds.
