@@ -9,7 +9,7 @@ class RowFilter:
         self.column = column
 
 
-    def contains(self, value:str) -> list:
+    def contains(self, value:str or list) -> list:
         """
         Returns index of all rows that contain `value`
         """
@@ -17,9 +17,18 @@ class RowFilter:
         # not having the headers row in self.rows_object
         # that way when the indexes are returned, 
         # they coincide with the index of the row in the original unaltered rows_object
-        if type(value) != str:
+        if type(value) == str:
+            return [self.rows_object.index(row) + 1 for row in self.rows_object if len(row) > 0 and value in row[self.column]]
+        elif type(value) == list:
+            result_rows = []
+            for row in self.rows_object:
+                for elem in value:
+                    if len(row) > 0:
+                        if str(elem).lower() in row[self.column] or str(elem).upper() in row[self.column] or str(elem).capitalize() in row[self.column]:
+                            result_rows.append(self.rows_object.index(row) + 1)
+            return result_rows
+        else:
             raise TypeError("contains() can only be applied to strings")
-        return [self.rows_object.index(row) + 1 for row in self.rows_object if len(row) > 0 and value in row[self.column]]
 
 
     def not_contains(self, value:str) -> list:

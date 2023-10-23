@@ -320,7 +320,7 @@ class CSVWizard:
         new_else_value: int or str = None,
         condition_col: int = None, 
         condition_operator: str = None, 
-        condition_value: int or str = None,
+        condition_value: int or str or list = None,
         encoding: str = ""
     ) -> list:
         """
